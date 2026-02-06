@@ -5,7 +5,10 @@
 #include <fstream>
 #include <iostream>
 
-bool CsvDataFrame::loadData(std::string inputFilePath)
+namespace FetchCSV
+{
+
+bool DataFrame::loadData(std::string inputFilePath)
 {
 
 	// Clear the frame contents (if any exist currently)
@@ -43,7 +46,7 @@ bool CsvDataFrame::loadData(std::string inputFilePath)
 
 }
 
-void CsvDataFrame::parseLine(std::string inputLine)
+void DataFrame::parseLine(std::string inputLine)
 {
 	std::string valueBuff {};
 	
@@ -65,6 +68,8 @@ void CsvDataFrame::parseLine(std::string inputLine)
 	mFrameContents.push_back(valueBuff);
 }
 
-std::vector<std::string>& CsvDataFrame::getData() { return mFrameContents; }
-int CsvDataFrame::getNumColumns() { return mNumColumns; }
-size_t CsvDataFrame::getNumCells() { return mFrameContents.size(); }
+std::vector<std::string>& DataFrame::getData() { return mFrameContents; }
+int DataFrame::getNumColumns() { return mNumColumns; }
+size_t DataFrame::getNumCells() { return mFrameContents.size(); }
+
+}

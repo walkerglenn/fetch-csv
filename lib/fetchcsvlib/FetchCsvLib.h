@@ -1,12 +1,17 @@
 #pragma once
 
+#include "imgui.h"
+#include "imgui_stdlib.h"
 #include <stdio.h>
 #include <string>
 #include <vector>
 #include <fstream>
 #include <iostream>
 
-class CsvDataFrame
+namespace FetchCSV
+{
+
+class DataFrame
 {
 
 private:
@@ -25,3 +30,7 @@ public:
 
 	size_t getNumCells();
 };
+
+void renderSpreadSheet();
+
+}

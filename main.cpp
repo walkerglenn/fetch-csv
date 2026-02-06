@@ -476,7 +476,7 @@ int main(int, char**)
         ImGui_ImplGlfw_NewFrame();
         ImGui::NewFrame();
 
-	// FetchCSV begins here ##################################################
+	// FetchCSV main functionality begins here
 	
 	// Create and show the main fullscreen window
 	static ImGuiWindowFlags mainWindowFlags = ImGuiWindowFlags_NoDecoration | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoSavedSettings;
@@ -491,10 +491,10 @@ int main(int, char**)
 	//bool showDemo {false};
 	//ImGui::ShowDemoWindow(&showDemo);
 
-	// Construct the table TODO: refactor this into a function (and into a struct/class/namespace later). Use ImGui::BeginTable in a function FetchCsv::showSpreadSheet(CsvDataFrame)
+	// Construct the table TODO: refactor this into a function (and into a struct/class/namespace later). Use in a function showSpreadSheet(CsvDataFrame& dataFrame)
 
 	static bool shouldLoadCsv { true };
-	static CsvDataFrame testDf;
+	static FetchCSV::DataFrame testDf;
 
 	if (shouldLoadCsv)
 	{
@@ -538,6 +538,9 @@ int main(int, char**)
 		pageStartIndex = numCells - pageSize;
 	}
 
+	// TODO: Go to row control
+	//
+	// TODO: Search values function
 
 	// Recalculate rendering indexes based on pagination changes
 	if (pageStartIndex + pageSize > numCells)
@@ -557,13 +560,44 @@ int main(int, char**)
 	static const float scrollBarWidth { ImGui::GetStyle().ScrollbarSize };
 	ImGui::BeginChild("SpreadSheetMain", ImVec2( (viewport->Size.x - scrollBarWidth), 500), ImGuiChildFlags_Borders);
 
+	// First row label
+
+	/*
+	const char* rowLabel = std::to_string(pageStartIndex).c_str();
+	ImGui::Text(rowLabel);
+	ImGui::SameLine();
+	const float paddedTextWidth = ImGui::CalcTextSize(rowLabel).x;
+	const float framePaddingWidth = ImGui::GetStyle().FramePadding.x;
+	// Add dynamic padding (supports very long numbers) TODO: Replace magic number 200.0 with something that makes sense
+	ImGui::Dummy((ImVec2( (200.0 - paddedTextWidth - (framePaddingWidth * 2)), 0.0)));
+	ImGui::SameLine();
+	*/
+
+	// Render spreadsheet
 	for (int i { pageStartIndex }; i < pageEndIndex; ++i)
 	{
+		bool isStartOfLine = (i % numColumns == 0);
+		bool isEndOfLine = ( !( ((i + 1) % numColumns) == 0 ));
+
+		//Row label	
+		if (isStartOfLine)
+		{
+			const char* rowLabel = std::to_string(i / numColumns).c_str();
+			ImGui::Text(rowLabel);
+			ImGui::SameLine();
+			const float paddedTextWidth = ImGui::CalcTextSize(rowLabel).x;
+			const float framePaddingWidth = ImGui::GetStyle().FramePadding.x;
+			// Add dynamic padding (supports very long numbers) TODO: Replace magic number 200.0 with something that makes sense
+			ImGui::Dummy((ImVec2( (200.0 - paddedTextWidth - (framePaddingWidth * 2)), 0.0)));
+			ImGui::SameLine();
+		}
+
+		//Cell
 		std::string cellLabel { "##Input" +  std::to_string(i) };
 		ImGui::PushItemWidth(200.0f); //TODO: A more dynamic item width
 		ImGui::InputText(cellLabel.c_str(), &testDf.getData()[i]);
 		ImGui::PopItemWidth();
-		if ( !( ((i + 1) % numColumns) == 0 ))
+		if (isEndOfLine)
 		{
 			ImGui::SameLine();
 		}
