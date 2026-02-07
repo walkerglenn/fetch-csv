@@ -553,56 +553,15 @@ int main(int, char**)
 		pageEndIndex = pageStartIndex + pageSize;
 	}
 
-	// TODO? Put headers up here in their own Child section, sync scroll with main Child
-	
 	// Render the dataFrame in a Child section
+	//
 	// TODO: Figure out what a happy dynamic height is
 	static const float scrollBarWidth { ImGui::GetStyle().ScrollbarSize };
 	ImGui::BeginChild("SpreadSheetMain", ImVec2( (viewport->Size.x - scrollBarWidth), 500), ImGuiChildFlags_Borders);
 
-	// First row label
 
-	/*
-	const char* rowLabel = std::to_string(pageStartIndex).c_str();
-	ImGui::Text(rowLabel);
-	ImGui::SameLine();
-	const float paddedTextWidth = ImGui::CalcTextSize(rowLabel).x;
-	const float framePaddingWidth = ImGui::GetStyle().FramePadding.x;
-	// Add dynamic padding (supports very long numbers) TODO: Replace magic number 200.0 with something that makes sense
-	ImGui::Dummy((ImVec2( (200.0 - paddedTextWidth - (framePaddingWidth * 2)), 0.0)));
-	ImGui::SameLine();
-	*/
-
-	// Render spreadsheet
-	for (int i { pageStartIndex }; i < pageEndIndex; ++i)
-	{
-		bool isStartOfLine = (i % numColumns == 0);
-		bool isEndOfLine = ( !( ((i + 1) % numColumns) == 0 ));
-
-		//Row label	
-		if (isStartOfLine)
-		{
-			const char* rowLabel = std::to_string(i / numColumns).c_str();
-			ImGui::Text(rowLabel);
-			ImGui::SameLine();
-			const float paddedTextWidth = ImGui::CalcTextSize(rowLabel).x;
-			const float framePaddingWidth = ImGui::GetStyle().FramePadding.x;
-			// Add dynamic padding (supports very long numbers) TODO: Replace magic number 200.0 with something that makes sense
-			ImGui::Dummy((ImVec2( (200.0 - paddedTextWidth - (framePaddingWidth * 2)), 0.0)));
-			ImGui::SameLine();
-		}
-
-		//Cell
-		std::string cellLabel { "##Input" +  std::to_string(i) };
-		ImGui::PushItemWidth(200.0f); //TODO: A more dynamic item width
-		ImGui::InputText(cellLabel.c_str(), &testDf.getData()[i]);
-		ImGui::PopItemWidth();
-		if (isEndOfLine)
-		{
-			ImGui::SameLine();
-		}
-	}
-
+	FetchCSV::renderSpreadSheet(testDf, pageStartIndex, pageEndIndex);
+	
 	ImGui::EndChild();
 
 	ImGui::End();

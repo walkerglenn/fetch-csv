@@ -31,6 +31,6 @@ public:
 	size_t getNumCells();
 };
 
-void renderSpreadSheet();
+void renderSpreadSheet(DataFrame dataFrame, int currentStartIndex, int currentEndIndex);
 
 }

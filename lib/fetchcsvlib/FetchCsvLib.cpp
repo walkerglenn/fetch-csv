@@ -72,4 +72,39 @@ std::vector<std::string>& DataFrame::getData() { return mFrameContents; }
 int DataFrame::getNumColumns() { return mNumColumns; }
 size_t DataFrame::getNumCells() { return mFrameContents.size(); }
 
+void renderSpreadSheet(DataFrame dataFrame, int currentStartIndex, int currentEndIndex)
+{
+	int numColumns { dataFrame.getNumColumns() };
+	for (int i { currentStartIndex }; i < currentEndIndex; ++i)
+	{
+		bool isStartOfLine = (i % numColumns == 0);
+		bool isEndOfLine = ( !( ((i + 1) % numColumns == 0 )) );
+
+		//Row label
+		if (isStartOfLine)
+		{
+			const char* rowLabel = std::to_string(i / numColumns).c_str();
+			ImGui::Text(rowLabel);
+			ImGui::SameLine();
+			const float paddedTextWidth = ImGui::CalcTextSize(rowLabel).x;
+			const float framePaddingWidth = ImGui::GetStyle().FramePadding.x;
+			// Add dynamic padding (supports very long numbers) TODO: Replace magic number 200.0 with something that makes sense
+			ImGui::Dummy((ImVec2( (200.0 - paddedTextWidth - (framePaddingWidth * 2)), 0.0)));
+			ImGui::SameLine();
+		}
+
+		//Cell
+		std::string cellLabel { "##Input" +  std::to_string(i) };
+		ImGui::PushItemWidth(200.0f); //TODO: A more dynamic item width
+		ImGui::InputText(cellLabel.c_str(), &dataFrame.getData()[i]);
+		ImGui::PopItemWidth();
+		if (isEndOfLine)
+		{
+			ImGui::SameLine();
+		}			
+
+	}
+
+}
+
 }
