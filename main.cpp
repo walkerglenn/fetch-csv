@@ -504,7 +504,8 @@ int main(int, char**)
 
 	int numColumns { testDf.getNumColumns() };
 	size_t numCells { testDf.getNumCells() };
-	static constexpr int pageSize { 1000 };	
+	static int numRowsToDisplay { 1'000 };
+	static int pageSize { numRowsToDisplay * numColumns };	
 	static int pageStartIndex { 0 };
 	static int pageEndIndex { 0 };
 

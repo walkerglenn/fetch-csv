@@ -49,13 +49,20 @@ bool DataFrame::loadData(std::string inputFilePath)
 void DataFrame::parseLine(std::string inputLine)
 {
 	std::string valueBuff {};
-	
+	bool isInQuotes { false };	
+
 	// Add values to the buffer, then add to dataframe and clear buffer when we reach a comma
 	for (const char ch : inputLine)
 	{
 		valueBuff += ch;
+		
+		if (ch == '"')
+		{
+			valueBuff.pop_back();
+			isInQuotes = !isInQuotes;
+		}
 
-		if (ch == ',')
+		if ( (ch == ',') && !(isInQuotes))
 		{
 			// Remove the comma from the end of the value
 			valueBuff.pop_back();
@@ -72,9 +79,11 @@ std::vector<std::string>& DataFrame::getData() { return mFrameContents; }
 int DataFrame::getNumColumns() { return mNumColumns; }
 size_t DataFrame::getNumCells() { return mFrameContents.size(); }
 
-void renderSpreadSheet(DataFrame dataFrame, int currentStartIndex, int currentEndIndex)
+void renderSpreadSheet(DataFrame& dataFrame, int currentStartIndex, int currentEndIndex)
 {
-	int numColumns { dataFrame.getNumColumns() };
+	const float cellWidth { 200.0f };
+	const float maxLabelWidth {ImGui::CalcTextSize("0000000000").x}; //Support label widths up to a value of 10 billion - 1
+	const int numColumns { dataFrame.getNumColumns() };
 	for (int i { currentStartIndex }; i < currentEndIndex; ++i)
 	{
 		bool isStartOfLine = (i % numColumns == 0);
@@ -89,13 +98,13 @@ void renderSpreadSheet(DataFrame dataFrame, int currentStartIndex, int currentEn
 			const float paddedTextWidth = ImGui::CalcTextSize(rowLabel).x;
 			const float framePaddingWidth = ImGui::GetStyle().FramePadding.x;
 			// Add dynamic padding (supports very long numbers) TODO: Replace magic number 200.0 with something that makes sense
-			ImGui::Dummy((ImVec2( (200.0 - paddedTextWidth - (framePaddingWidth * 2)), 0.0)));
+			ImGui::Dummy((ImVec2( (maxLabelWidth - paddedTextWidth - (framePaddingWidth * 2)), 0.0)));
 			ImGui::SameLine();
 		}
 
 		//Cell
 		std::string cellLabel { "##Input" +  std::to_string(i) };
-		ImGui::PushItemWidth(200.0f); //TODO: A more dynamic item width
+		ImGui::PushItemWidth(cellWidth); //TODO: A more dynamic item width
 		ImGui::InputText(cellLabel.c_str(), &dataFrame.getData()[i]);
 		ImGui::PopItemWidth();
 		if (isEndOfLine)
