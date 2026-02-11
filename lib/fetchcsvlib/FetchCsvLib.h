@@ -19,7 +19,7 @@ private:
 	int  mNumColumns;
 
 	// Scan through a single line and add values to the contents vector
-	void parseLine(std::string inputLine);
+	void parseLine(std::string_view inputLine);
 
 public:	
 	bool loadData(std::string inputFilePath);

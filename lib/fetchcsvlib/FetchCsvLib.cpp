@@ -46,7 +46,7 @@ bool DataFrame::loadData(std::string inputFilePath)
 
 }
 
-void DataFrame::parseLine(std::string inputLine)
+void DataFrame::parseLine(std::string_view inputLine)
 {
 	std::string valueBuff {};
 	bool isInQuotes { false };	
@@ -97,7 +97,7 @@ void renderSpreadSheet(DataFrame& dataFrame, int currentStartIndex, int currentE
 			ImGui::SameLine();
 			const float paddedTextWidth = ImGui::CalcTextSize(rowLabel).x;
 			const float framePaddingWidth = ImGui::GetStyle().FramePadding.x;
-			// Add dynamic padding (supports very long numbers) TODO: Replace magic number 200.0 with something that makes sense
+			// Add dynamic padding (supports very long numbers)
 			ImGui::Dummy((ImVec2( (maxLabelWidth - paddedTextWidth - (framePaddingWidth * 2)), 0.0)));
 			ImGui::SameLine();
 		}

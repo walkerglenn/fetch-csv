@@ -479,7 +479,7 @@ int main(int, char**)
 	// FetchCSV main functionality begins here
 	
 	// Create and show the main fullscreen window
-	static ImGuiWindowFlags mainWindowFlags = ImGuiWindowFlags_NoDecoration | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoSavedSettings;
+	static ImGuiWindowFlags mainWindowFlags = ImGuiWindowFlags_NoDecoration | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoSavedSettings | ImGuiWindowFlags_MenuBar;
 
 	const ImGuiViewport* viewport { ImGui::GetMainViewport() };
 	ImGui::SetNextWindowPos(viewport->Pos);
@@ -488,11 +488,10 @@ int main(int, char**)
 	ImGui::Begin("FetchCSV-Window", nullptr, mainWindowFlags);
 
 	// In case we need to see the demo window for reference	
-	//bool showDemo {false};
-	//ImGui::ShowDemoWindow(&showDemo);
+	static bool showDemo {false};
+	ImGui::ShowDemoWindow(&showDemo);
 
-	// Construct the table TODO: refactor this into a function (and into a struct/class/namespace later). Use in a function showSpreadSheet(CsvDataFrame& dataFrame)
-
+	// Load the DataFrame, if needed
 	static bool shouldLoadCsv { true };
 	static FetchCSV::DataFrame testDf;
 
@@ -502,10 +501,26 @@ int main(int, char**)
 		shouldLoadCsv = false;
 	}
 
+	// Menu bar
+	if (ImGui::BeginMenuBar())
+	{
+		if (ImGui::BeginMenu("File"))
+		{
+			if (ImGui::MenuItem("Open"))
+			{
+				std::cerr << "Not implemented!" << '\n';
+			}
+
+			ImGui::EndMenu();
+		}
+	}
+
+	ImGui::EndMenuBar();
+	// Pagination variales
 	int numColumns { testDf.getNumColumns() };
 	size_t numCells { testDf.getNumCells() };
 	static int numRowsToDisplay { 1'000 };
-	static int pageSize { numRowsToDisplay * numColumns };	
+	static int numCellsToRender { numRowsToDisplay * numColumns };	
 	static int pageStartIndex { 0 };
 	static int pageEndIndex { 0 };
 
@@ -521,7 +536,7 @@ int main(int, char**)
 	{
 		if (!(pageStartIndex == 0))
 		{
-			pageStartIndex -= pageSize;
+			pageStartIndex -= numCellsToRender;
 		}
 	}
 	
@@ -529,14 +544,14 @@ int main(int, char**)
 
 	if (ImGui::Button(">"))
 	{
-		pageStartIndex += pageSize;
+		pageStartIndex += numCellsToRender;
 	}
 
 	ImGui::SameLine();
 
 	if (ImGui::Button(">>"))
 	{
-		pageStartIndex = numCells - pageSize;
+		pageStartIndex = numCells - numCellsToRender;
 	}
 
 	// TODO: Go to row control
@@ -544,14 +559,14 @@ int main(int, char**)
 	// TODO: Search values function
 
 	// Recalculate rendering indexes based on pagination changes
-	if (pageStartIndex + pageSize > numCells)
+	if (pageStartIndex + numCellsToRender > numCells)
 	{
 		pageEndIndex = numCells;
-		pageStartIndex = pageEndIndex - pageSize;
+		pageStartIndex = pageEndIndex - numCellsToRender;
 	}
 	else
 	{
-		pageEndIndex = pageStartIndex + pageSize;
+		pageEndIndex = pageStartIndex + numCellsToRender;
 	}
 
 	// Render the dataFrame in a Child section
