@@ -31,7 +31,6 @@ bool DataFrame::loadData(std::string inputFilePath)
 	// This call to parseLine lets us get the number of columns
 	parseLine(inputLine);
 	mNumColumns = static_cast<int>(mFrameContents.size());
-	std::cout << "Size: " << mNumColumns << '\n';
 
 	//Parse subsequent lines
 	while (std::getline(inputFile, inputLine))
@@ -39,7 +38,7 @@ bool DataFrame::loadData(std::string inputFilePath)
 		parseLine(inputLine);
 	}
 	
-	std::cout << "File " << inputFilePath << " loaded successfully!" << '\n';
+	std::cout << "File " << inputFilePath << " loaded successfully" << '\n';
 	std::cout << mFrameContents.size() << " cells loaded" << '\n';
 	
 	return true;

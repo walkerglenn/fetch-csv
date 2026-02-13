@@ -488,8 +488,8 @@ int main(int, char**)
 	ImGui::Begin("FetchCSV-Window", nullptr, mainWindowFlags);
 
 	// In case we need to see the demo window for reference	
-	static bool showDemo {false};
-	ImGui::ShowDemoWindow(&showDemo);
+	//static bool showDemo {false};
+	//ImGui::ShowDemoWindow(&showDemo);
 
 	// Load the DataFrame, if needed
 	static bool shouldLoadCsv { true };
@@ -506,7 +506,67 @@ int main(int, char**)
 	{
 		if (ImGui::BeginMenu("File"))
 		{
+			if (ImGui::MenuItem("New"))
+			{
+				std::cerr << "Not implemented!" << '\n';
+			}
+
 			if (ImGui::MenuItem("Open"))
+			{
+				std::cerr << "Not implemented!" << '\n';
+			}
+			
+			if (ImGui::MenuItem("Save"))
+			{
+				std::cerr << "Not implemented!" << '\n';
+			}
+
+			if (ImGui::MenuItem("Save As..."))
+			{
+				std::cerr << "Not implemented!" << '\n';
+			}
+
+			if (ImGui::MenuItem("Close"))
+			{
+				std::cerr << "Not implemented!" << '\n';
+			}
+
+			ImGui::EndMenu();
+		}
+		
+		if (ImGui::BeginMenu("Edit"))
+		{
+			if (ImGui::BeginMenu("Sort"))
+			{
+				if (ImGui::MenuItem("Placeholder"))
+				{
+					std::cerr << "Not implemented!" << '\n';
+				}
+				
+				ImGui::EndMenu();
+			}
+
+			if (ImGui::BeginMenu("Display"))
+			{
+				if (ImGui::MenuItem("Column Width"))
+				{
+					std::cerr << "Not implemented!" << '\n';
+				}
+				
+				ImGui::EndMenu();
+			}
+
+			ImGui::EndMenu();
+		}
+
+		if (ImGui::BeginMenu("Find"))
+		{
+			if (ImGui::MenuItem("Search for Value"))
+			{
+				std::cerr << "Not implemented!" << '\n';
+			}
+
+			if (ImGui::MenuItem("Jump to Row"))
 			{
 				std::cerr << "Not implemented!" << '\n';
 			}
@@ -516,6 +576,7 @@ int main(int, char**)
 	}
 
 	ImGui::EndMenuBar();
+
 	// Pagination variales
 	int numColumns { testDf.getNumColumns() };
 	size_t numCells { testDf.getNumCells() };
@@ -553,10 +614,6 @@ int main(int, char**)
 	{
 		pageStartIndex = numCells - numCellsToRender;
 	}
-
-	// TODO: Go to row control
-	//
-	// TODO: Search values function
 
 	// Recalculate rendering indexes based on pagination changes
 	if (pageStartIndex + numCellsToRender > numCells)
