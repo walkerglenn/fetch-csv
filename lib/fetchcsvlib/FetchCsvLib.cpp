@@ -8,7 +8,7 @@
 namespace FetchCSV
 {
 
-bool DataFrame::loadData(std::string inputFilePath)
+bool DataFrame::loadData(const std::string& inputFilePath)
 {
 
 	// Clear the frame contents (if any exist currently)
@@ -20,9 +20,12 @@ bool DataFrame::loadData(std::string inputFilePath)
 
 	if (!inputFile)
 	{
-		std::cerr << "Error opening file!" << '\n';
+		std::cerr << "Error opening input file!" << '\n';
 		return false;
 	}			
+
+	// Assign a file path
+	mFilePath = inputFilePath;
 
 	// First line of the file
 	std::string inputLine {};
@@ -77,10 +80,51 @@ void DataFrame::parseLine(std::string_view inputLine)
 std::vector<std::string>& DataFrame::getData() { return mFrameContents; }
 int DataFrame::getNumColumns() { return mNumColumns; }
 size_t DataFrame::getNumCells() { return mFrameContents.size(); }
+const std::string& DataFrame::getFilePath() { return mFilePath; }
 
-void renderSpreadSheet(DataFrame& dataFrame, int currentStartIndex, int currentEndIndex)
+bool DataFrame::saveData(const std::string& outputFilePath)
 {
-	const float cellWidth { 200.0f };
+	std::ofstream outputFile { outputFilePath };
+
+	if (!outputFile)
+	{
+		std::cerr << "Error loading output file!" << '\n';
+		return false;
+	}
+
+	int index { 1 };
+
+	for (const std::string& value : mFrameContents)
+	{
+		// Check for embedded comma(s)
+		if (value.find(',') != std::string::npos)
+		{
+			outputFile << '"' << value << '"';
+		}
+		else
+		{
+			outputFile << value;
+		}
+
+		// Check if it's the end of a row
+		if (index % mNumColumns == 0)
+		{
+			outputFile << '\n';
+		}
+		else
+		{
+			outputFile << ',';
+		}
+
+		++index;
+
+	}	
+
+	return true;
+}
+
+void renderSpreadSheet(DataFrame& dataFrame, int currentStartIndex, int currentEndIndex, float cellWidth)
+{
 	const float maxLabelWidth {ImGui::CalcTextSize("0000000000").x}; //Support label widths up to a value of 10 billion - 1
 	const int numColumns { dataFrame.getNumColumns() };
 	for (int i { currentStartIndex }; i < currentEndIndex; ++i)

@@ -351,6 +351,83 @@ static void FramePresent(ImGui_ImplVulkanH_Window* wd)
     wd->SemaphoreIndex = (wd->SemaphoreIndex + 1) % wd->SemaphoreCount; // Now we can use the next set of semaphores
 }
 
+// FetchCSV-specific functions ###
+static void showMainMenuBar(FetchCSV::DataFrame& activeDf)
+{
+
+	if (ImGui::BeginMenu("File"))
+	{
+		if (ImGui::MenuItem("New"))
+		{
+			std::cerr << "Not implemented!" << '\n';
+		}
+
+		if (ImGui::MenuItem("Open"))
+		{
+			std::cerr << "Not implemented!" << '\n';
+		}
+		
+		if (ImGui::MenuItem("Save"))
+		{
+			if (activeDf.saveData("Output.csv"))
+			{
+				std::cout << "DF saved!" << '\n';
+			}
+		}
+
+		if (ImGui::MenuItem("Save As..."))
+		{
+			std::cerr << "Not implemented!" << '\n';
+		}
+
+		if (ImGui::MenuItem("Close"))
+		{
+			std::cerr << "Not implemented!" << '\n';
+		}
+
+		ImGui::EndMenu();
+	}
+	
+	if (ImGui::BeginMenu("Edit"))
+	{
+		if (ImGui::BeginMenu("Sort"))
+		{
+			if (ImGui::MenuItem("Placeholder"))
+			{
+				std::cerr << "Not implemented!" << '\n';
+			}
+			
+			ImGui::EndMenu();
+		}
+
+		if (ImGui::BeginMenu("Display"))
+		{
+			if (ImGui::MenuItem("Column Width"))
+			{
+				std::cerr << "Not implemented!" << '\n';
+			}
+			
+			ImGui::EndMenu();
+		}
+
+		ImGui::EndMenu();
+	}
+
+	if (ImGui::BeginMenu("Find"))
+	{
+		if (ImGui::MenuItem("Search for Value"))
+		{
+			std::cerr << "Not implemented!" << '\n';
+		}
+
+		if (ImGui::MenuItem("Jump to Row"))
+		{
+			std::cerr << "Not implemented!" << '\n';
+		}
+
+		ImGui::EndMenu();
+	}
+}
 // Main code
 int main(int, char**)
 {
@@ -441,8 +518,8 @@ int main(int, char**)
     //IM_ASSERT(font != nullptr);
 
     // Our state
-    bool show_demo_window = true;
-    bool show_another_window = false;
+    //bool show_demo_window = true;
+    //bool show_another_window = false;
     ImVec4 clear_color = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
 
     // Main loop
@@ -476,7 +553,7 @@ int main(int, char**)
         ImGui_ImplGlfw_NewFrame();
         ImGui::NewFrame();
 
-	// FetchCSV main functionality begins here
+	// FetchCSV main functionality begins here ###
 	
 	// Create and show the main fullscreen window
 	static ImGuiWindowFlags mainWindowFlags = ImGuiWindowFlags_NoDecoration | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoSavedSettings | ImGuiWindowFlags_MenuBar;
@@ -493,93 +570,29 @@ int main(int, char**)
 
 	// Load the DataFrame, if needed
 	static bool shouldLoadCsv { true };
-	static FetchCSV::DataFrame testDf;
+	static FetchCSV::DataFrame activeDataFrame;
 
 	if (shouldLoadCsv)
 	{
-		testDf.loadData("Test.csv");	
+		if (activeDataFrame.loadData("Test.csv"))
+		{
+			std::cout << "Loaded dataframe: " << activeDataFrame.getFilePath() << '\n';
+		}
+
 		shouldLoadCsv = false;
 	}
 
 	// Menu bar
 	if (ImGui::BeginMenuBar())
 	{
-		if (ImGui::BeginMenu("File"))
-		{
-			if (ImGui::MenuItem("New"))
-			{
-				std::cerr << "Not implemented!" << '\n';
-			}
-
-			if (ImGui::MenuItem("Open"))
-			{
-				std::cerr << "Not implemented!" << '\n';
-			}
-			
-			if (ImGui::MenuItem("Save"))
-			{
-				std::cerr << "Not implemented!" << '\n';
-			}
-
-			if (ImGui::MenuItem("Save As..."))
-			{
-				std::cerr << "Not implemented!" << '\n';
-			}
-
-			if (ImGui::MenuItem("Close"))
-			{
-				std::cerr << "Not implemented!" << '\n';
-			}
-
-			ImGui::EndMenu();
-		}
-		
-		if (ImGui::BeginMenu("Edit"))
-		{
-			if (ImGui::BeginMenu("Sort"))
-			{
-				if (ImGui::MenuItem("Placeholder"))
-				{
-					std::cerr << "Not implemented!" << '\n';
-				}
-				
-				ImGui::EndMenu();
-			}
-
-			if (ImGui::BeginMenu("Display"))
-			{
-				if (ImGui::MenuItem("Column Width"))
-				{
-					std::cerr << "Not implemented!" << '\n';
-				}
-				
-				ImGui::EndMenu();
-			}
-
-			ImGui::EndMenu();
-		}
-
-		if (ImGui::BeginMenu("Find"))
-		{
-			if (ImGui::MenuItem("Search for Value"))
-			{
-				std::cerr << "Not implemented!" << '\n';
-			}
-
-			if (ImGui::MenuItem("Jump to Row"))
-			{
-				std::cerr << "Not implemented!" << '\n';
-			}
-
-			ImGui::EndMenu();
-		}
+		showMainMenuBar(activeDataFrame);
 	}
 
 	ImGui::EndMenuBar();
 
-	// Pagination variales
-	int numColumns { testDf.getNumColumns() };
-	size_t numCells { testDf.getNumCells() };
+	// Pagination variables
+	int numColumns { activeDataFrame.getNumColumns() };
+	size_t numCells { activeDataFrame.getNumCells() };
 	static int numRowsToDisplay { 1'000 };
 	static int numCellsToRender { numRowsToDisplay * numColumns };	
 	static int pageStartIndex { 0 };
@@ -627,13 +640,12 @@ int main(int, char**)
 	}
 
 	// Render the dataFrame in a Child section
-	//
 	// TODO: Figure out what a happy dynamic height is
 	static const float scrollBarWidth { ImGui::GetStyle().ScrollbarSize };
+
 	ImGui::BeginChild("SpreadSheetMain", ImVec2( (viewport->Size.x - scrollBarWidth), 500), ImGuiChildFlags_Borders);
 
-
-	FetchCSV::renderSpreadSheet(testDf, pageStartIndex, pageEndIndex);
+	FetchCSV::renderSpreadSheet(activeDataFrame, pageStartIndex, pageEndIndex, 200.0f);
 	
 	ImGui::EndChild();
 
