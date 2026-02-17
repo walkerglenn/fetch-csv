@@ -20,12 +20,12 @@ private:
 	std::string  mFilePath;
 
 	// Scan through a single line and add values to the contents vector
-	void parseLine(std::string_view inputLine);
+	void parseLine(std::string_view inputLine, const char delimiter);
 
 public:	
-	bool loadData(const std::string& inputFilePath);
+	bool loadData(const std::string& inputFilePath, const char delimiter = ',');
 
-	bool saveData(const std::string& outputFilePath);
+	bool saveData(const std::string& outputFilePath, const char delimiter = ',');
 
 	std::vector<std::string>& getData();
 	

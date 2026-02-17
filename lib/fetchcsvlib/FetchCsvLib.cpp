@@ -8,7 +8,7 @@
 namespace FetchCSV
 {
 
-bool DataFrame::loadData(const std::string& inputFilePath)
+bool DataFrame::loadData(const std::string& inputFilePath, const char delimiter)
 {
 
 	// Clear the frame contents (if any exist currently)
@@ -32,13 +32,13 @@ bool DataFrame::loadData(const std::string& inputFilePath)
 	std::getline(inputFile, inputLine);
 
 	// This call to parseLine lets us get the number of columns
-	parseLine(inputLine);
+	parseLine(inputLine, delimiter);
 	mNumColumns = static_cast<int>(mFrameContents.size());
 
 	//Parse subsequent lines
 	while (std::getline(inputFile, inputLine))
 	{
-		parseLine(inputLine);
+		parseLine(inputLine, delimiter);
 	}
 	
 	std::cout << "File " << inputFilePath << " loaded successfully" << '\n';
@@ -48,7 +48,7 @@ bool DataFrame::loadData(const std::string& inputFilePath)
 
 }
 
-void DataFrame::parseLine(std::string_view inputLine)
+void DataFrame::parseLine(std::string_view inputLine, const char delimiter)
 {
 	std::string valueBuff {};
 	bool isInQuotes { false };	
@@ -64,7 +64,7 @@ void DataFrame::parseLine(std::string_view inputLine)
 			isInQuotes = !isInQuotes;
 		}
 
-		if ( (ch == ',') && !(isInQuotes))
+		if ( (ch == delimiter) && !(isInQuotes))
 		{
 			// Remove the comma from the end of the value
 			valueBuff.pop_back();
@@ -82,7 +82,7 @@ int DataFrame::getNumColumns() { return mNumColumns; }
 size_t DataFrame::getNumCells() { return mFrameContents.size(); }
 const std::string& DataFrame::getFilePath() { return mFilePath; }
 
-bool DataFrame::saveData(const std::string& outputFilePath)
+bool DataFrame::saveData(const std::string& outputFilePath, const char delimiter)
 {
 	std::ofstream outputFile { outputFilePath };
 
@@ -97,7 +97,7 @@ bool DataFrame::saveData(const std::string& outputFilePath)
 	for (const std::string& value : mFrameContents)
 	{
 		// Check for embedded comma(s)
-		if (value.find(',') != std::string::npos)
+		if (value.find(delimiter) != std::string::npos)
 		{
 			outputFile << '"' << value << '"';
 		}
@@ -113,7 +113,7 @@ bool DataFrame::saveData(const std::string& outputFilePath)
 		}
 		else
 		{
-			outputFile << ',';
+			outputFile << delimiter;
 		}
 
 		++index;
