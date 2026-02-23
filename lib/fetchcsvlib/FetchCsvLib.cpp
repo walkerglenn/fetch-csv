@@ -78,9 +78,9 @@ void DataFrame::parseLine(std::string_view inputLine, const char delimiter)
 }
 
 std::vector<std::string>& DataFrame::getData() { return mFrameContents; }
-int DataFrame::getNumColumns() { return mNumColumns; }
-size_t DataFrame::getNumCells() { return mFrameContents.size(); }
-const std::string& DataFrame::getFilePath() { return mFilePath; }
+int DataFrame::getNumColumns() const { return mNumColumns; }
+size_t DataFrame::getNumCells() const { return mFrameContents.size(); }
+const std::string& DataFrame::getFilePath() const { return mFilePath; }
 
 bool DataFrame::saveData(const std::string& outputFilePath, const char delimiter)
 {

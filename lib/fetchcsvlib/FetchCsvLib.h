@@ -29,11 +29,11 @@ public:
 
 	std::vector<std::string>& getData();
 	
-	int getNumColumns();
+	int getNumColumns() const;
 
-	size_t getNumCells();
+	size_t getNumCells() const;
 	
-	const std::string& getFilePath();
+	const std::string& getFilePath() const;
 };
 
 void renderSpreadSheet(DataFrame& dataFrame, int currentStartIndex, int currentEndIndex, float cellWidth);
