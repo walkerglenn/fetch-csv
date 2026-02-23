@@ -4,7 +4,7 @@
 # compile CXX with /usr/bin/c++
 CXX_DEFINES = 
 
-CXX_INCLUDES = -I/home/comrade/Documents/Projects/FetchCSV/lib/glfw/glfw/include -I/home/comrade/Documents/Projects/FetchCSV/lib/imgui -I/home/comrade/Documents/Projects/FetchCSV/lib/imgui/backends -I/home/comrade/Documents/Projects/FetchCSV/lib/imgui/misc/cpp -I/home/comrade/Documents/Projects/FetchCSV/.. -I/home/comrade/Documents/Projects/FetchCSV/lib/fetchcsvlib -I/home/comrade/Documents/Projects/FetchCSV/lib/glfw/glfw/deps
+CXX_INCLUDES = -I/home/comrade/Documents/Projects/FetchCSV/lib/glfw/glfw/include -I/home/comrade/Documents/Projects/FetchCSV/lib/imgui -I/home/comrade/Documents/Projects/FetchCSV/lib/imgui/backends -I/home/comrade/Documents/Projects/FetchCSV/lib/imgui/misc/cpp -I/home/comrade/Documents/Projects/FetchCSV/.. -I/home/comrade/Documents/Projects/FetchCSV/lib/fetchcsvlib -I/home/comrade/Documents/Projects/FetchCSV/lib/glfw/glfw/deps -I/home/comrade/Documents/Projects/FetchCSV/lib/nativefiledialog-extended/src/include
 
 CXX_FLAGS =  -DVK_PROTOTYPES -g -std=gnu++23
 

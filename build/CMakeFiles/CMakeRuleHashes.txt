@@ -18,3 +18,5 @@ b31757ed0ac71dff79659422ba90aa76 binary_dir/src/xdg-decoration-unstable-v1-clien
 3ff3b8583e7cda368915e6eae2930bf1 binary_dir/src/xdg-decoration-unstable-v1-client-protocol.h
 6690eb2abbaeacb9c7db9dc42c903fcb binary_dir/src/xdg-shell-client-protocol-code.h
 bbe53c6a396965918b6c5159d0974dd3 binary_dir/src/xdg-shell-client-protocol.h
+74012b615876a56da6e38442aea62335 lib/nativefiledialog-extended/src/xdg-foreign-unstable-v1.c
+5ef278a70806510b860c046f073ce723 lib/nativefiledialog-extended/src/xdg-foreign-unstable-v1.h

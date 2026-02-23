@@ -242,8 +242,23 @@ FetchCSV: CMakeFiles/FetchCSV.dir/build.make
 FetchCSV: CMakeFiles/FetchCSV.dir/compiler_depend.ts
 FetchCSV: binary_dir/src/libglfw3.a
 FetchCSV: /usr/lib/x86_64-linux-gnu/libvulkan.so
+FetchCSV: lib/nativefiledialog-extended/src/libnfd.a
 FetchCSV: /usr/lib/x86_64-linux-gnu/librt.a
 FetchCSV: /usr/lib/x86_64-linux-gnu/libm.so
+FetchCSV: /usr/lib/x86_64-linux-gnu/libgtk-3.so
+FetchCSV: /usr/lib/x86_64-linux-gnu/libgdk-3.so
+FetchCSV: /usr/lib/x86_64-linux-gnu/libz.so
+FetchCSV: /usr/lib/x86_64-linux-gnu/libpangocairo-1.0.so
+FetchCSV: /usr/lib/x86_64-linux-gnu/libpango-1.0.so
+FetchCSV: /usr/lib/x86_64-linux-gnu/libharfbuzz.so
+FetchCSV: /usr/lib/x86_64-linux-gnu/libatk-1.0.so
+FetchCSV: /usr/lib/x86_64-linux-gnu/libcairo-gobject.so
+FetchCSV: /usr/lib/x86_64-linux-gnu/libcairo.so
+FetchCSV: /usr/lib/x86_64-linux-gnu/libgdk_pixbuf-2.0.so
+FetchCSV: /usr/lib/x86_64-linux-gnu/libgio-2.0.so
+FetchCSV: /usr/lib/x86_64-linux-gnu/libgobject-2.0.so
+FetchCSV: /usr/lib/x86_64-linux-gnu/libglib-2.0.so
+FetchCSV: /usr/lib/x86_64-linux-gnu/libwayland-client.so
 FetchCSV: CMakeFiles/FetchCSV.dir/link.txt
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir=/home/comrade/Documents/Projects/FetchCSV/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_11) "Linking CXX executable FetchCSV"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/FetchCSV.dir/link.txt --verbose=$(VERBOSE)

@@ -7,3 +7,8 @@
 /home/comrade/Documents/Projects/FetchCSV/build/binary_dir/src/CMakeFiles/update_mappings.dir
 /home/comrade/Documents/Projects/FetchCSV/build/binary_dir/src/CMakeFiles/edit_cache.dir
 /home/comrade/Documents/Projects/FetchCSV/build/binary_dir/src/CMakeFiles/rebuild_cache.dir
+/home/comrade/Documents/Projects/FetchCSV/build/lib/nativefiledialog-extended/CMakeFiles/edit_cache.dir
+/home/comrade/Documents/Projects/FetchCSV/build/lib/nativefiledialog-extended/CMakeFiles/rebuild_cache.dir
+/home/comrade/Documents/Projects/FetchCSV/build/lib/nativefiledialog-extended/src/CMakeFiles/nfd.dir
+/home/comrade/Documents/Projects/FetchCSV/build/lib/nativefiledialog-extended/src/CMakeFiles/edit_cache.dir
+/home/comrade/Documents/Projects/FetchCSV/build/lib/nativefiledialog-extended/src/CMakeFiles/rebuild_cache.dir

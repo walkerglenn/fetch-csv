@@ -14,8 +14,23 @@ FetchCSV: \
   CMakeFiles/FetchCSV.dir/lib/fetchcsvlib/FetchCsvLib.cpp.o \
   binary_dir/src/libglfw3.a \
   /usr/lib/x86_64-linux-gnu/libvulkan.so \
+  lib/nativefiledialog-extended/src/libnfd.a \
   /usr/lib/gcc/x86_64-linux-gnu/14/../../../x86_64-linux-gnu/librt.a \
   /usr/lib/gcc/x86_64-linux-gnu/14/../../../x86_64-linux-gnu/libdl.a \
+  /usr/lib/gcc/x86_64-linux-gnu/14/../../../x86_64-linux-gnu/libgtk-3.so \
+  /usr/lib/gcc/x86_64-linux-gnu/14/../../../x86_64-linux-gnu/libgdk-3.so \
+  /usr/lib/gcc/x86_64-linux-gnu/14/../../../x86_64-linux-gnu/libz.so \
+  /usr/lib/gcc/x86_64-linux-gnu/14/../../../x86_64-linux-gnu/libpangocairo-1.0.so \
+  /usr/lib/gcc/x86_64-linux-gnu/14/../../../x86_64-linux-gnu/libpango-1.0.so \
+  /usr/lib/gcc/x86_64-linux-gnu/14/../../../x86_64-linux-gnu/libharfbuzz.so \
+  /usr/lib/gcc/x86_64-linux-gnu/14/../../../x86_64-linux-gnu/libatk-1.0.so \
+  /usr/lib/gcc/x86_64-linux-gnu/14/../../../x86_64-linux-gnu/libcairo-gobject.so \
+  /usr/lib/gcc/x86_64-linux-gnu/14/../../../x86_64-linux-gnu/libcairo.so \
+  /usr/lib/gcc/x86_64-linux-gnu/14/../../../x86_64-linux-gnu/libgdk_pixbuf-2.0.so \
+  /usr/lib/gcc/x86_64-linux-gnu/14/../../../x86_64-linux-gnu/libgio-2.0.so \
+  /usr/lib/gcc/x86_64-linux-gnu/14/../../../x86_64-linux-gnu/libgobject-2.0.so \
+  /usr/lib/gcc/x86_64-linux-gnu/14/../../../x86_64-linux-gnu/libglib-2.0.so \
+  /usr/lib/gcc/x86_64-linux-gnu/14/../../../x86_64-linux-gnu/libwayland-client.so \
   /usr/lib/gcc/x86_64-linux-gnu/14/libstdc++.so \
   /usr/lib/gcc/x86_64-linux-gnu/14/../../../x86_64-linux-gnu/libm.so \
   /usr/lib/gcc/x86_64-linux-gnu/14/../../../x86_64-linux-gnu/libm.so \
@@ -74,9 +89,39 @@ binary_dir/src/libglfw3.a:
 
 /usr/lib/x86_64-linux-gnu/libvulkan.so:
 
+lib/nativefiledialog-extended/src/libnfd.a:
+
 /usr/lib/gcc/x86_64-linux-gnu/14/../../../x86_64-linux-gnu/librt.a:
 
 /usr/lib/gcc/x86_64-linux-gnu/14/../../../x86_64-linux-gnu/libdl.a:
+
+/usr/lib/gcc/x86_64-linux-gnu/14/../../../x86_64-linux-gnu/libgtk-3.so:
+
+/usr/lib/gcc/x86_64-linux-gnu/14/../../../x86_64-linux-gnu/libgdk-3.so:
+
+/usr/lib/gcc/x86_64-linux-gnu/14/../../../x86_64-linux-gnu/libz.so:
+
+/usr/lib/gcc/x86_64-linux-gnu/14/../../../x86_64-linux-gnu/libpangocairo-1.0.so:
+
+/usr/lib/gcc/x86_64-linux-gnu/14/../../../x86_64-linux-gnu/libpango-1.0.so:
+
+/usr/lib/gcc/x86_64-linux-gnu/14/../../../x86_64-linux-gnu/libharfbuzz.so:
+
+/usr/lib/gcc/x86_64-linux-gnu/14/../../../x86_64-linux-gnu/libatk-1.0.so:
+
+/usr/lib/gcc/x86_64-linux-gnu/14/../../../x86_64-linux-gnu/libcairo-gobject.so:
+
+/usr/lib/gcc/x86_64-linux-gnu/14/../../../x86_64-linux-gnu/libcairo.so:
+
+/usr/lib/gcc/x86_64-linux-gnu/14/../../../x86_64-linux-gnu/libgdk_pixbuf-2.0.so:
+
+/usr/lib/gcc/x86_64-linux-gnu/14/../../../x86_64-linux-gnu/libgio-2.0.so:
+
+/usr/lib/gcc/x86_64-linux-gnu/14/../../../x86_64-linux-gnu/libgobject-2.0.so:
+
+/usr/lib/gcc/x86_64-linux-gnu/14/../../../x86_64-linux-gnu/libglib-2.0.so:
+
+/usr/lib/gcc/x86_64-linux-gnu/14/../../../x86_64-linux-gnu/libwayland-client.so:
 
 /usr/lib/gcc/x86_64-linux-gnu/14/libstdc++.so:
 

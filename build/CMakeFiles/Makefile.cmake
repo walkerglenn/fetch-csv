@@ -15,6 +15,8 @@ set(CMAKE_MAKEFILE_DEPENDS
   "/home/comrade/Documents/Projects/FetchCSV/lib/glfw/glfw/CMake/glfw3Config.cmake.in"
   "/home/comrade/Documents/Projects/FetchCSV/lib/glfw/glfw/CMakeLists.txt"
   "/home/comrade/Documents/Projects/FetchCSV/lib/glfw/glfw/src/CMakeLists.txt"
+  "/home/comrade/Documents/Projects/FetchCSV/lib/nativefiledialog-extended/CMakeLists.txt"
+  "/home/comrade/Documents/Projects/FetchCSV/lib/nativefiledialog-extended/src/CMakeLists.txt"
   "/usr/share/cmake-3.31/Modules/BasicConfigVersion-SameMajorVersion.cmake.in"
   "/usr/share/cmake-3.31/Modules/CMakeCInformation.cmake"
   "/usr/share/cmake-3.31/Modules/CMakeCXXInformation.cmake"
@@ -35,6 +37,8 @@ set(CMAKE_MAKEFILE_DEPENDS
   "/usr/share/cmake-3.31/Modules/Compiler/GNU-C.cmake"
   "/usr/share/cmake-3.31/Modules/Compiler/GNU-CXX.cmake"
   "/usr/share/cmake-3.31/Modules/Compiler/GNU.cmake"
+  "/usr/share/cmake-3.31/Modules/FindFontconfig.cmake"
+  "/usr/share/cmake-3.31/Modules/FindFreetype.cmake"
   "/usr/share/cmake-3.31/Modules/FindPackageHandleStandardArgs.cmake"
   "/usr/share/cmake-3.31/Modules/FindPackageMessage.cmake"
   "/usr/share/cmake-3.31/Modules/FindPkgConfig.cmake"
@@ -59,6 +63,7 @@ set(CMAKE_MAKEFILE_DEPENDS
   "/usr/share/cmake-3.31/Modules/Platform/Linux-Initialize.cmake"
   "/usr/share/cmake-3.31/Modules/Platform/Linux.cmake"
   "/usr/share/cmake-3.31/Modules/Platform/UnixPaths.cmake"
+  "/usr/share/cmake-3.31/Modules/SelectLibraryConfigurations.cmake"
   "/usr/share/cmake-3.31/Modules/WriteBasicConfigVersionFile.cmake"
   )
 
@@ -76,6 +81,8 @@ set(CMAKE_MAKEFILE_PRODUCTS
   "binary_dir/CMakeFiles/CMakeDirectoryInformation.cmake"
   "binary_dir/src/glfw3.pc"
   "binary_dir/src/CMakeFiles/CMakeDirectoryInformation.cmake"
+  "lib/nativefiledialog-extended/CMakeFiles/CMakeDirectoryInformation.cmake"
+  "lib/nativefiledialog-extended/src/CMakeFiles/CMakeDirectoryInformation.cmake"
   )
 
 # Dependency information for all targets:
@@ -83,4 +90,5 @@ set(CMAKE_DEPEND_INFO_FILES
   "CMakeFiles/FetchCSV.dir/DependInfo.cmake"
   "binary_dir/src/CMakeFiles/glfw.dir/DependInfo.cmake"
   "binary_dir/src/CMakeFiles/update_mappings.dir/DependInfo.cmake"
+  "lib/nativefiledialog-extended/src/CMakeFiles/nfd.dir/DependInfo.cmake"
   )

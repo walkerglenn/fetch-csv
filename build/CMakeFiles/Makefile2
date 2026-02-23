@@ -64,19 +64,22 @@ CMAKE_BINARY_DIR = /home/comrade/Documents/Projects/FetchCSV/build
 
 # The main recursive "all" target.
 all: CMakeFiles/FetchCSV.dir/all
+all: lib/nativefiledialog-extended/all
 .PHONY : all
 
 # The main recursive "codegen" target.
 codegen: CMakeFiles/FetchCSV.dir/codegen
+codegen: lib/nativefiledialog-extended/codegen
 .PHONY : codegen
 
 # The main recursive "preinstall" target.
-preinstall:
+preinstall: lib/nativefiledialog-extended/preinstall
 .PHONY : preinstall
 
 # The main recursive "clean" target.
 clean: CMakeFiles/FetchCSV.dir/clean
 clean: binary_dir/clean
+clean: lib/nativefiledialog-extended/clean
 .PHONY : clean
 
 #=============================================================================
@@ -119,10 +122,49 @@ binary_dir/src/clean: binary_dir/src/CMakeFiles/update_mappings.dir/clean
 .PHONY : binary_dir/src/clean
 
 #=============================================================================
+# Directory level rules for directory lib/nativefiledialog-extended
+
+# Recursive "all" directory target.
+lib/nativefiledialog-extended/all: lib/nativefiledialog-extended/src/all
+.PHONY : lib/nativefiledialog-extended/all
+
+# Recursive "codegen" directory target.
+lib/nativefiledialog-extended/codegen: lib/nativefiledialog-extended/src/codegen
+.PHONY : lib/nativefiledialog-extended/codegen
+
+# Recursive "preinstall" directory target.
+lib/nativefiledialog-extended/preinstall: lib/nativefiledialog-extended/src/preinstall
+.PHONY : lib/nativefiledialog-extended/preinstall
+
+# Recursive "clean" directory target.
+lib/nativefiledialog-extended/clean: lib/nativefiledialog-extended/src/clean
+.PHONY : lib/nativefiledialog-extended/clean
+
+#=============================================================================
+# Directory level rules for directory lib/nativefiledialog-extended/src
+
+# Recursive "all" directory target.
+lib/nativefiledialog-extended/src/all: lib/nativefiledialog-extended/src/CMakeFiles/nfd.dir/all
+.PHONY : lib/nativefiledialog-extended/src/all
+
+# Recursive "codegen" directory target.
+lib/nativefiledialog-extended/src/codegen: lib/nativefiledialog-extended/src/CMakeFiles/nfd.dir/codegen
+.PHONY : lib/nativefiledialog-extended/src/codegen
+
+# Recursive "preinstall" directory target.
+lib/nativefiledialog-extended/src/preinstall:
+.PHONY : lib/nativefiledialog-extended/src/preinstall
+
+# Recursive "clean" directory target.
+lib/nativefiledialog-extended/src/clean: lib/nativefiledialog-extended/src/CMakeFiles/nfd.dir/clean
+.PHONY : lib/nativefiledialog-extended/src/clean
+
+#=============================================================================
 # Target rules for target CMakeFiles/FetchCSV.dir
 
 # All Build rule for target.
 CMakeFiles/FetchCSV.dir/all: binary_dir/src/CMakeFiles/glfw.dir/all
+CMakeFiles/FetchCSV.dir/all: lib/nativefiledialog-extended/src/CMakeFiles/nfd.dir/all
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/FetchCSV.dir/build.make CMakeFiles/FetchCSV.dir/depend
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/FetchCSV.dir/build.make CMakeFiles/FetchCSV.dir/build
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/home/comrade/Documents/Projects/FetchCSV/build/CMakeFiles --progress-num=1,2,3,4,5,6,7,8,9,10,11 "Built target FetchCSV"
@@ -130,7 +172,7 @@ CMakeFiles/FetchCSV.dir/all: binary_dir/src/CMakeFiles/glfw.dir/all
 
 # Build rule for subdir invocation for target.
 CMakeFiles/FetchCSV.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/comrade/Documents/Projects/FetchCSV/build/CMakeFiles 56
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/comrade/Documents/Projects/FetchCSV/build/CMakeFiles 61
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CMakeFiles/FetchCSV.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/comrade/Documents/Projects/FetchCSV/build/CMakeFiles 0
 .PHONY : CMakeFiles/FetchCSV.dir/rule
@@ -189,7 +231,7 @@ binary_dir/src/CMakeFiles/glfw.dir/clean:
 binary_dir/src/CMakeFiles/update_mappings.dir/all:
 	$(MAKE) $(MAKESILENT) -f binary_dir/src/CMakeFiles/update_mappings.dir/build.make binary_dir/src/CMakeFiles/update_mappings.dir/depend
 	$(MAKE) $(MAKESILENT) -f binary_dir/src/CMakeFiles/update_mappings.dir/build.make binary_dir/src/CMakeFiles/update_mappings.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/home/comrade/Documents/Projects/FetchCSV/build/CMakeFiles --progress-num=57 "Built target update_mappings"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/home/comrade/Documents/Projects/FetchCSV/build/CMakeFiles --progress-num=62 "Built target update_mappings"
 .PHONY : binary_dir/src/CMakeFiles/update_mappings.dir/all
 
 # Build rule for subdir invocation for target.
@@ -206,13 +248,45 @@ update_mappings: binary_dir/src/CMakeFiles/update_mappings.dir/rule
 # codegen rule for target.
 binary_dir/src/CMakeFiles/update_mappings.dir/codegen:
 	$(MAKE) $(MAKESILENT) -f binary_dir/src/CMakeFiles/update_mappings.dir/build.make binary_dir/src/CMakeFiles/update_mappings.dir/codegen
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/home/comrade/Documents/Projects/FetchCSV/build/CMakeFiles --progress-num=57 "Finished codegen for target update_mappings"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/home/comrade/Documents/Projects/FetchCSV/build/CMakeFiles --progress-num=62 "Finished codegen for target update_mappings"
 .PHONY : binary_dir/src/CMakeFiles/update_mappings.dir/codegen
 
 # clean rule for target.
 binary_dir/src/CMakeFiles/update_mappings.dir/clean:
 	$(MAKE) $(MAKESILENT) -f binary_dir/src/CMakeFiles/update_mappings.dir/build.make binary_dir/src/CMakeFiles/update_mappings.dir/clean
 .PHONY : binary_dir/src/CMakeFiles/update_mappings.dir/clean
+
+#=============================================================================
+# Target rules for target lib/nativefiledialog-extended/src/CMakeFiles/nfd.dir
+
+# All Build rule for target.
+lib/nativefiledialog-extended/src/CMakeFiles/nfd.dir/all:
+	$(MAKE) $(MAKESILENT) -f lib/nativefiledialog-extended/src/CMakeFiles/nfd.dir/build.make lib/nativefiledialog-extended/src/CMakeFiles/nfd.dir/depend
+	$(MAKE) $(MAKESILENT) -f lib/nativefiledialog-extended/src/CMakeFiles/nfd.dir/build.make lib/nativefiledialog-extended/src/CMakeFiles/nfd.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/home/comrade/Documents/Projects/FetchCSV/build/CMakeFiles --progress-num=57,58,59,60,61 "Built target nfd"
+.PHONY : lib/nativefiledialog-extended/src/CMakeFiles/nfd.dir/all
+
+# Build rule for subdir invocation for target.
+lib/nativefiledialog-extended/src/CMakeFiles/nfd.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/comrade/Documents/Projects/FetchCSV/build/CMakeFiles 5
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 lib/nativefiledialog-extended/src/CMakeFiles/nfd.dir/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/comrade/Documents/Projects/FetchCSV/build/CMakeFiles 0
+.PHONY : lib/nativefiledialog-extended/src/CMakeFiles/nfd.dir/rule
+
+# Convenience name for target.
+nfd: lib/nativefiledialog-extended/src/CMakeFiles/nfd.dir/rule
+.PHONY : nfd
+
+# codegen rule for target.
+lib/nativefiledialog-extended/src/CMakeFiles/nfd.dir/codegen:
+	$(MAKE) $(MAKESILENT) -f lib/nativefiledialog-extended/src/CMakeFiles/nfd.dir/build.make lib/nativefiledialog-extended/src/CMakeFiles/nfd.dir/codegen
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/home/comrade/Documents/Projects/FetchCSV/build/CMakeFiles --progress-num=57,58,59,60,61 "Finished codegen for target nfd"
+.PHONY : lib/nativefiledialog-extended/src/CMakeFiles/nfd.dir/codegen
+
+# clean rule for target.
+lib/nativefiledialog-extended/src/CMakeFiles/nfd.dir/clean:
+	$(MAKE) $(MAKESILENT) -f lib/nativefiledialog-extended/src/CMakeFiles/nfd.dir/build.make lib/nativefiledialog-extended/src/CMakeFiles/nfd.dir/clean
+.PHONY : lib/nativefiledialog-extended/src/CMakeFiles/nfd.dir/clean
 
 #=============================================================================
 # Special targets to cleanup operation of make.

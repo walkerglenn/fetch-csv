@@ -155,6 +155,19 @@ update_mappings/fast:
 	$(MAKE) $(MAKESILENT) -f binary_dir/src/CMakeFiles/update_mappings.dir/build.make binary_dir/src/CMakeFiles/update_mappings.dir/build
 .PHONY : update_mappings/fast
 
+#=============================================================================
+# Target rules for targets named nfd
+
+# Build rule for target.
+nfd: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 nfd
+.PHONY : nfd
+
+# fast build rule for target.
+nfd/fast:
+	$(MAKE) $(MAKESILENT) -f lib/nativefiledialog-extended/src/CMakeFiles/nfd.dir/build.make lib/nativefiledialog-extended/src/CMakeFiles/nfd.dir/build
+.PHONY : nfd/fast
+
 lib/fetchcsvlib/FetchCsvLib.o: lib/fetchcsvlib/FetchCsvLib.cpp.o
 .PHONY : lib/fetchcsvlib/FetchCsvLib.o
 
@@ -406,6 +419,7 @@ help:
 	@echo "... update_mappings"
 	@echo "... FetchCSV"
 	@echo "... glfw"
+	@echo "... nfd"
 	@echo "... lib/fetchcsvlib/FetchCsvLib.o"
 	@echo "... lib/fetchcsvlib/FetchCsvLib.i"
 	@echo "... lib/fetchcsvlib/FetchCsvLib.s"

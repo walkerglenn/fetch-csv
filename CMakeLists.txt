@@ -32,6 +32,10 @@ include_directories(${IMGUI_DIR} ${IMGUI_DIR}/backends ${IMGUI_DIR}/misc/cpp ..)
 
 # Libraries
 
+# Native File Dialog
+add_subdirectory(lib/nativefiledialog-extended)
+#target_link_libraries(FetchCSV PRIVATE nfd)
+
 # FetchCSV Libraries
 set (FCSV_DIR lib/fetchcsvlib)
 include_directories(${FCSV_DIR})
@@ -42,7 +46,7 @@ find_package(Vulkan REQUIRED)
 #find_library(VULKAN_LIBRARY
   #NAMES vulkan vulkan-1)
 #set(LIBRARIES "glfw;${VULKAN_LIBRARY}")
-set(LIBRARIES "glfw;Vulkan::Vulkan")
+set(LIBRARIES "glfw;Vulkan::Vulkan;nfd")
 
 # Use vulkan headers from glfw:
 include_directories(${GLFW_DIR}/deps)
