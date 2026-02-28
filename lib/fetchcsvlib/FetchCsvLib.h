@@ -16,7 +16,7 @@ class DataFrame
 
 private:
 	std::vector<std::string> mFrameContents;
-	int  mNumColumns;
+	size_t  mNumColumns;
 	std::string  mFilePath;
 
 	// Scan through a single line and add values to the contents vector
@@ -29,13 +29,13 @@ public:
 
 	std::vector<std::string>& getData();
 	
-	int getNumColumns() const;
+	size_t getNumColumns() const;
 
 	size_t getNumCells() const;
 	
 	const std::string& getFilePath() const;
 };
 
-void renderSpreadSheet(DataFrame& dataFrame, int currentStartIndex, int currentEndIndex, float cellWidth);
+void renderSpreadSheet(DataFrame& dataFrame, size_t currentStartIndex, size_t currentEndIndex, float cellWidth);
 
 }

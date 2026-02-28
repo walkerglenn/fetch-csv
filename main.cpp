@@ -591,12 +591,12 @@ int main(int, char**)
 	ImGui::EndMenuBar();
 
 	// Pagination variables
-	int numColumns { activeDataFrame.getNumColumns() };
+	size_t numColumns { activeDataFrame.getNumColumns() };
 	size_t numCells { activeDataFrame.getNumCells() };
-	static int numRowsToDisplay { 1'000 };
-	static int numCellsToRender { numRowsToDisplay * numColumns };	
-	static int pageStartIndex { 0 };
-	static int pageEndIndex { 0 };
+	static size_t numRowsToDisplay { 1'000 };
+	static size_t numCellsToRender { numRowsToDisplay * numColumns };	
+	static size_t pageStartIndex { 0 };
+	static size_t pageEndIndex { 0 };
 
 	// Pagination controls
 	if (ImGui::Button("<<"))

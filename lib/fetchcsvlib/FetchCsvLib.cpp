@@ -33,7 +33,7 @@ bool DataFrame::loadData(const std::string& inputFilePath, const char delimiter)
 
 	// This call to parseLine lets us get the number of columns
 	parseLine(inputLine, delimiter);
-	mNumColumns = static_cast<int>(mFrameContents.size());
+	mNumColumns = mFrameContents.size();
 
 	//Parse subsequent lines
 	while (std::getline(inputFile, inputLine))
@@ -78,7 +78,7 @@ void DataFrame::parseLine(std::string_view inputLine, const char delimiter)
 }
 
 std::vector<std::string>& DataFrame::getData() { return mFrameContents; }
-int DataFrame::getNumColumns() const { return mNumColumns; }
+size_t DataFrame::getNumColumns() const { return mNumColumns; }
 size_t DataFrame::getNumCells() const { return mFrameContents.size(); }
 const std::string& DataFrame::getFilePath() const { return mFilePath; }
 
@@ -123,11 +123,11 @@ bool DataFrame::saveData(const std::string& outputFilePath, const char delimiter
 	return true;
 }
 
-void renderSpreadSheet(DataFrame& dataFrame, int currentStartIndex, int currentEndIndex, float cellWidth)
+void renderSpreadSheet(DataFrame& dataFrame, size_t currentStartIndex, size_t currentEndIndex, float cellWidth)
 {
 	const float maxLabelWidth {ImGui::CalcTextSize("0000000000").x}; //Support label widths up to a value of 10 billion - 1
-	const int numColumns { dataFrame.getNumColumns() };
-	for (int i { currentStartIndex }; i < currentEndIndex; ++i)
+	const size_t numColumns { dataFrame.getNumColumns() };
+	for (size_t i { currentStartIndex }; i < currentEndIndex; ++i)
 	{
 		bool isStartOfLine = (i % numColumns == 0);
 		bool isEndOfLine = ( !( ((i + 1) % numColumns == 0 )) );
