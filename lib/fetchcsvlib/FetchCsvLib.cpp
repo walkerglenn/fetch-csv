@@ -96,7 +96,7 @@ bool DataFrame::saveData(const std::string& outputFilePath, const char delimiter
 
 	for (const std::string& value : mFrameContents)
 	{
-		// Check for embedded comma(s)
+		// Check for delimiters embedded in values (e.g. a comma in a value of a comma-separated file)
 		if (value.find(delimiter) != std::string::npos)
 		{
 			outputFile << '"' << value << '"';
