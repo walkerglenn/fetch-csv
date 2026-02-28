@@ -643,7 +643,7 @@ int main(int, char**)
 	// TODO: Figure out what a happy dynamic height is
 	static const float scrollBarWidth { ImGui::GetStyle().ScrollbarSize };
 
-	ImGui::BeginChild("SpreadSheetMain", ImVec2( (viewport->Size.x - scrollBarWidth), 500), ImGuiChildFlags_Borders);
+	ImGui::BeginChild("SpreadSheetMain", ImVec2( (viewport->Size.x - scrollBarWidth), 500), ImGuiChildFlags_Borders, ImGuiWindowFlags_HorizontalScrollbar);
 
 	FetchCSV::renderSpreadSheet(activeDataFrame, pageStartIndex, pageEndIndex, 200.0f);
 	
