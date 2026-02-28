@@ -18,12 +18,14 @@
 #include "imgui_impl_glfw.h"
 #include "imgui_impl_vulkan.h"
 #include "imgui_stdlib.h"
-#include <stdio.h>          // printf, fprintf
-#include <stdlib.h>         // abort
-#include <string>
 #define GLFW_INCLUDE_NONE
 #define GLFW_INCLUDE_VULKAN
 #include <GLFW/glfw3.h>
+#include <nfd.h>
+#include <nfd_glfw3.h>
+#include <stdio.h>          // printf, fprintf
+#include <stdlib.h>         // abort
+#include <string>
 
 // Volk headers
 #ifdef IMGUI_IMPL_VULKAN_USE_VOLK
@@ -351,8 +353,45 @@ static void FramePresent(ImGui_ImplVulkanH_Window* wd)
     wd->SemaphoreIndex = (wd->SemaphoreIndex + 1) % wd->SemaphoreCount; // Now we can use the next set of semaphores
 }
 
+// Native file dialog (nativefiledialog) functions
+void error_callback(int error_code, const char* description) {
+	std::cerr << "GLFW call failed (code " << error_code << "): " << description << '\n';
+}
+
+void set_native_window(GLFWwindow* glfwWindow, nfdwindowhandle_t* nativeWindow) {
+    if (!NFD_GetNativeWindowFromGLFWWindow(glfwWindow, nativeWindow)) {
+	    std::cerr << "NFD_GetNativeWindowFromGLFWWindow failed" << '\n';
+    }
+}
+
+//TODO: Make this return the path, preferably with something like std::path
+void open_file(GLFWwindow* window, int mods)
+{
+	(void)mods;
+	char* path;
+            nfdopendialogu8args_t args = {0};
+            set_native_window(window, &args.parentWindow);
+            const nfdresult_t res = NFD_OpenDialogU8_With(&path, &args);
+            switch (res)
+	    {
+                case NFD_OKAY:
+		    std::cout << "NFD_OpenDialogU8_With success: " << path << '\n';
+                    NFD_FreePathU8(path);
+                    break;
+                case NFD_CANCEL:
+		    std::cout << "NFD_OpenDialogU8_With cancelled" << '\n';
+                    break;
+                case NFD_ERROR:
+		    std::cerr << "NFD_OpenDialogU8_With error: " << NFD_GetError() << '\n';
+		    break;
+                default:
+                    break;
+	    }
+}
+
+
 // FetchCSV-specific functions ###
-static void showMainMenuBar(FetchCSV::DataFrame& activeDf)
+static void showMainMenuBar(FetchCSV::DataFrame& activeDf, GLFWwindow* window)
 {
 
 	if (ImGui::BeginMenu("File"))
@@ -364,7 +403,7 @@ static void showMainMenuBar(FetchCSV::DataFrame& activeDf)
 
 		if (ImGui::MenuItem("Open"))
 		{
-			std::cerr << "Not implemented!" << '\n';
+			open_file(window, 0);
 		}
 		
 		if (ImGui::MenuItem("Save"))
@@ -435,6 +474,16 @@ int main(int, char**)
     if (!glfwInit())
         return 1;
 
+    if (NFD_Init() != NFD_OKAY)
+    {
+	std::cerr << "NFD_Init failed: " << NFD_GetError();
+	abort();    
+    }
+    
+    if (!NFD_SetDisplayPropertiesFromGLFW()) {
+	    std::cerr << "NFD_SetDisplayPropertiesFromGLFW failed" << '\n';
+    }
+    
     // Create window with Vulkan context
     glfwWindowHint(GLFW_CLIENT_API, GLFW_NO_API);
     float main_scale = ImGui_ImplGlfw_GetContentScaleForMonitor(glfwGetPrimaryMonitor()); // Valid on GLFW 3.3+ only
@@ -585,7 +634,7 @@ int main(int, char**)
 	// Menu bar
 	if (ImGui::BeginMenuBar())
 	{
-		showMainMenuBar(activeDataFrame);
+		showMainMenuBar(activeDataFrame, window);
 	}
 
 	ImGui::EndMenuBar();
