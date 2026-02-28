@@ -135,7 +135,9 @@ void renderSpreadSheet(DataFrame& dataFrame, size_t currentStartIndex, size_t cu
 		//Row label
 		if (isStartOfLine)
 		{
-			const char* rowLabel = std::to_string(i / numColumns).c_str();
+			// Convert to a std::string then return a c-style string for ImGui's text label
+			std::string rowLabelStr = std::to_string(i / numColumns);
+			const char* rowLabel = rowLabelStr.c_str();
 			ImGui::Text(rowLabel);
 			ImGui::SameLine();
 			const float paddedTextWidth = ImGui::CalcTextSize(rowLabel).x;
