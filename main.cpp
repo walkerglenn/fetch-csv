@@ -364,11 +364,11 @@ void set_native_window(GLFWwindow* glfwWindow, nfdwindowhandle_t* nativeWindow) 
     }
 }
 
-//TODO: Make this return the path, preferably with something like std::path
-void open_file(GLFWwindow* window, int mods)
+const std::string open_file(GLFWwindow* window, int mods)
 {
 	(void)mods;
 	char* path;
+	std::string pathCppStr {""};
             nfdopendialogu8args_t args = {0};
             set_native_window(window, &args.parentWindow);
             const nfdresult_t res = NFD_OpenDialogU8_With(&path, &args);
@@ -376,15 +376,20 @@ void open_file(GLFWwindow* window, int mods)
 	    {
                 case NFD_OKAY:
 		    std::cout << "NFD_OpenDialogU8_With success: " << path << '\n';
+		    pathCppStr = path;
                     NFD_FreePathU8(path);
+		    return pathCppStr;
                     break;
                 case NFD_CANCEL:
 		    std::cout << "NFD_OpenDialogU8_With cancelled" << '\n';
+		    return pathCppStr;
                     break;
                 case NFD_ERROR:
 		    std::cerr << "NFD_OpenDialogU8_With error: " << NFD_GetError() << '\n';
+		    return pathCppStr;
 		    break;
                 default:
+		    return pathCppStr;
                     break;
 	    }
 }
@@ -403,7 +408,11 @@ static void showMainMenuBar(FetchCSV::DataFrame& activeDf, GLFWwindow* window)
 
 		if (ImGui::MenuItem("Open"))
 		{
-			open_file(window, 0);
+			std::string selectedPath {open_file(window, 0)};
+			if (selectedPath != "")
+			{
+				activeDf.loadData(selectedPath);
+			}
 		}
 		
 		if (ImGui::MenuItem("Save"))
@@ -621,16 +630,6 @@ int main(int, char**)
 	static bool shouldLoadCsv { true };
 	static FetchCSV::DataFrame activeDataFrame;
 
-	if (shouldLoadCsv)
-	{
-		if (activeDataFrame.loadData("Test.csv"))
-		{
-			std::cout << "Loaded dataframe: " << activeDataFrame.getFilePath() << '\n';
-		}
-
-		shouldLoadCsv = false;
-	}
-
 	// Menu bar
 	if (ImGui::BeginMenuBar())
 	{
@@ -643,7 +642,13 @@ int main(int, char**)
 	size_t numColumns { activeDataFrame.getNumColumns() };
 	size_t numCells { activeDataFrame.getNumCells() };
 	static size_t numRowsToDisplay { 1'000 };
-	static size_t numCellsToRender { numRowsToDisplay * numColumns };	
+
+	size_t numCellsToRender { numRowsToDisplay * numColumns };	
+	if (numCellsToRender > numCells)
+	{
+		numCellsToRender = numCells;
+	}
+
 	static size_t pageStartIndex { 0 };
 	static size_t pageEndIndex { 0 };
 
