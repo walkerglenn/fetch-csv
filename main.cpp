@@ -364,7 +364,7 @@ void set_native_window(GLFWwindow* glfwWindow, nfdwindowhandle_t* nativeWindow) 
     }
 }
 
-const std::string open_file(GLFWwindow* window, int mods)
+const std::string open_file(GLFWwindow* window, int mods = 0)
 {
 	(void)mods;
 	char* path;
@@ -394,6 +394,35 @@ const std::string open_file(GLFWwindow* window, int mods)
 	    }
 }
 
+const std::string save_file(GLFWwindow* window, int mods = 0)
+{
+	(void)mods;
+	char* path;
+	std::string pathCppStr {""};
+            nfdsavedialogu8args_t args = {0};
+            set_native_window(window, &args.parentWindow);
+            const nfdresult_t res = NFD_SaveDialogU8_With(&path, &args);
+            switch (res)
+	    {
+                case NFD_OKAY:
+		    std::cout << "NFD_SaveDialogU8_With success: " << path << '\n';
+		    pathCppStr = path;
+                    NFD_FreePathU8(path);
+		    return pathCppStr;
+                    break;
+                case NFD_CANCEL:
+		    std::cout << "NFD_SaveDialogU8_With cancelled" << '\n';
+		    return pathCppStr;
+                    break;
+                case NFD_ERROR:
+		    std::cerr << "NFD_OpenDialogU8_With error: " << NFD_GetError() << '\n';
+		    return pathCppStr;
+		    break;
+                default:
+		    return pathCppStr;
+                    break;
+	    }
+}
 
 // FetchCSV-specific functions ###
 static void showMainMenuBar(FetchCSV::DataFrame& activeDf, GLFWwindow* window)
@@ -408,7 +437,7 @@ static void showMainMenuBar(FetchCSV::DataFrame& activeDf, GLFWwindow* window)
 
 		if (ImGui::MenuItem("Open"))
 		{
-			std::string selectedPath {open_file(window, 0)};
+			std::string selectedPath {open_file(window)};
 			if (selectedPath != "")
 			{
 				activeDf.loadData(selectedPath);
@@ -417,15 +446,26 @@ static void showMainMenuBar(FetchCSV::DataFrame& activeDf, GLFWwindow* window)
 		
 		if (ImGui::MenuItem("Save"))
 		{
-			if (activeDf.saveData("Output.csv"))
+			std::string selectedPath {activeDf.getFilePath()};
+			if (selectedPath != "")
 			{
-				std::cout << "DF saved!" << '\n';
+				if (activeDf.saveData(selectedPath))
+				{
+					std::cout << "DF saved to: " << selectedPath << '\n';
+				}
 			}
 		}
 
 		if (ImGui::MenuItem("Save As..."))
 		{
-			std::cerr << "Not implemented!" << '\n';
+			std::string selectedPath {save_file(window)};
+			if (selectedPath != "")
+			{
+				if (activeDf.saveData(selectedPath))
+				{
+					std::cout << "DF saved to: " << selectedPath << '\n';
+				}
+			}
 		}
 
 		if (ImGui::MenuItem("Close"))
