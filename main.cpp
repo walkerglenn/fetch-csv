@@ -517,7 +517,7 @@ static void showMainMenuBar(FetchCSV::DataFrame& activeDf, GLFWwindow* window)
 	}
 }
 // Main code
-int main(int, char**)
+int main(int argc, char* argv[])
 {
     glfwSetErrorCallback(glfw_error_callback);
     if (!glfwInit())
@@ -666,9 +666,16 @@ int main(int, char**)
 	//static bool showDemo {false};
 	//ImGui::ShowDemoWindow(&showDemo);
 
-	// Load the DataFrame, if needed
-	static bool shouldLoadCsv { true };
+	// Initialize the active dataframe
 	static FetchCSV::DataFrame activeDataFrame;
+
+	// If we have command-line arguments, try to load the dataframe from that path
+	static bool shouldLoadCsv { true };
+	if ( (shouldLoadCsv) && (argc > 1) )
+	{
+		activeDataFrame.loadData(argv[1]);
+		shouldLoadCsv = false;
+	}
 
 	// Menu bar
 	if (ImGui::BeginMenuBar())
