@@ -743,8 +743,11 @@ int main(int argc, char* argv[])
 	// Render the dataFrame in a Child section
 	// TODO: Figure out what a happy dynamic height is
 	static const float scrollBarWidth { ImGui::GetStyle().ScrollbarSize };
+	static const float spreadsheetPanelStartPos { ImGui::GetCursorScreenPos().y };
+	static const float framePaddingHeight { ImGui::GetStyle().FramePadding.y };
+	static const float framePaddingWidth { ImGui::GetStyle().FramePadding.x };
 
-	ImGui::BeginChild("SpreadSheetMain", ImVec2( (viewport->Size.x - scrollBarWidth), 500), ImGuiChildFlags_Borders, ImGuiWindowFlags_HorizontalScrollbar);
+	ImGui::BeginChild("SpreadsheetMain", ImVec2( (viewport->Size.x - scrollBarWidth - framePaddingWidth), viewport->Size.y - spreadsheetPanelStartPos - (framePaddingHeight * 3) ), ImGuiChildFlags_Borders, ImGuiWindowFlags_HorizontalScrollbar);
 
 	FetchCSV::renderSpreadSheet(activeDataFrame, pageStartIndex, pageEndIndex, 200.0f);
 	
