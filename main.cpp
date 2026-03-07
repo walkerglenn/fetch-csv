@@ -743,62 +743,42 @@ int main(int argc, char* argv[])
 		pageEndIndex = pageStartIndex + numCellsToRender;
 	}
 
-	// Render the dataFrame in a Child section
-	// TODO: Figure out what a happy dynamic height is
+	// Render the dataFrame (and headers) in a Child section
 	static const float scrollBarSize { ImGui::GetStyle().ScrollbarSize };
-	static const float spreadsheetPanelStartPos { ImGui::GetCursorScreenPos().y };
 	static const float framePaddingHeight { ImGui::GetStyle().FramePadding.y };
 	static const float framePaddingWidth { ImGui::GetStyle().FramePadding.x };
 	static const ImVec2 itemSpacing { ImGui::GetStyle().ItemSpacing };
 	static float framedWidgetHeight { ImGui::GetFrameHeightWithSpacing() };
 	static float cellWidth = 200.0f; // TODO: Figure out what a "happy" dynamic width is
+	static float xScrollPos { 0.0 };
 
 	// Render headers (if we're supposed to)
 	if (shouldRenderHeaders)	
 	{
-		ImGui::BeginChild("HeaderPanel", ImVec2( (viewport->Size.x - scrollBarSize - framePaddingWidth), (framedWidgetHeight + (framePaddingHeight * 2) + (itemSpacing.y * 2) ) ), ImGuiChildFlags_Borders, ImGuiWindowFlags_NoScrollbar);
+		ImGui::BeginChild("HeaderPanel", ImVec2( (viewport->Size.x - scrollBarSize - framePaddingWidth), (framedWidgetHeight + (framePaddingHeight * 2) + (itemSpacing.y * 2) ) ), ImGuiChildFlags_Borders, ImGuiWindowFlags_AlwaysVerticalScrollbar);
 
 		FetchCSV::renderSpreadSheet(activeDataFrame, 0, numColumns, cellWidth);
+
+		ImGui::SetScrollX(xScrollPos);
 
 		ImGui::EndChild();
 	}
 	
 	// Main spreadsheet rendering section
+	static const float spreadsheetPanelStartPos { ImGui::GetCursorScreenPos().y };
+
 	ImGui::BeginChild("SpreadsheetMainPanel", ImVec2( (viewport->Size.x - scrollBarSize - framePaddingWidth), viewport->Size.y - spreadsheetPanelStartPos - (framePaddingHeight * 3) ), ImGuiChildFlags_Borders, ImGuiWindowFlags_HorizontalScrollbar);
 
 	FetchCSV::renderSpreadSheet(activeDataFrame, pageStartIndex, pageEndIndex, cellWidth);
 	
+	xScrollPos = ImGui::GetScrollX();
+
 	ImGui::EndChild();
 
 	ImGui::End();
 
 	/* We'll keep this here as an example of how this works
         
-	// 1. Show the big demo window (Most of the sample code is in ImGui::ShowDemoWindow()! You can browse its code to learn more about Dear ImGui!).  if (show_demo_window) ImGui::ShowDemoWindow(&show_demo_window);
-	
-        // 2. Show a simple window that we create ourselves. We use a Begin/End pair to create a named window.
-        {
-            static float f = 0.0f;
-            static int counter = 0;
-
-            ImGui::Begin("Hello, Test! - Caz :3");                          // Create a window called "Hello, world!" and append into it.
-
-            ImGui::Text("This is some useful text.");               // Display some text (you can use a format strings too)
-            ImGui::Checkbox("Demo Window", &show_demo_window);      // Edit bools storing our window open/close state
-            ImGui::Checkbox("Another Window", &show_another_window);
-
-            ImGui::SliderFloat("float", &f, 0.0f, 1.0f);            // Edit 1 float using a slider from 0.0f to 1.0f
-            ImGui::ColorEdit3("clear color", (float*)&clear_color); // Edit 3 floats representing a color
-
-            if (ImGui::Button("Button"))                            // Buttons return true when clicked (most widgets return true when edited/activated)
-                counter++;
-            ImGui::SameLine();
-            ImGui::Text("counter = %d", counter);
-
-            ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / io.Framerate, io.Framerate);
-            ImGui::End();
-        }
-
         // 3. Show another simple window.
         if (show_another_window)
         {
