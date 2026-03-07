@@ -676,7 +676,10 @@ int main(int argc, char* argv[])
 		activeDataFrame.loadData(argv[1]);
 		shouldLoadCsv = false;
 	}
-
+	
+	// Render headers by default (TODO: Maybe make this a config setting .ini)
+	static bool shouldRenderHeaders { true };	
+	
 	// Menu bar
 	if (ImGui::BeginMenuBar())
 	{
@@ -742,14 +745,28 @@ int main(int argc, char* argv[])
 
 	// Render the dataFrame in a Child section
 	// TODO: Figure out what a happy dynamic height is
-	static const float scrollBarWidth { ImGui::GetStyle().ScrollbarSize };
+	static const float scrollBarSize { ImGui::GetStyle().ScrollbarSize };
 	static const float spreadsheetPanelStartPos { ImGui::GetCursorScreenPos().y };
 	static const float framePaddingHeight { ImGui::GetStyle().FramePadding.y };
 	static const float framePaddingWidth { ImGui::GetStyle().FramePadding.x };
+	static const ImVec2 itemSpacing { ImGui::GetStyle().ItemSpacing };
+	static float framedWidgetHeight { ImGui::GetFrameHeightWithSpacing() };
+	static float cellWidth = 200.0f; // TODO: Figure out what a "happy" dynamic width is
 
-	ImGui::BeginChild("SpreadsheetMain", ImVec2( (viewport->Size.x - scrollBarWidth - framePaddingWidth), viewport->Size.y - spreadsheetPanelStartPos - (framePaddingHeight * 3) ), ImGuiChildFlags_Borders, ImGuiWindowFlags_HorizontalScrollbar);
+	// Render headers (if we're supposed to)
+	if (shouldRenderHeaders)	
+	{
+		ImGui::BeginChild("HeaderPanel", ImVec2( (viewport->Size.x - scrollBarSize - framePaddingWidth), (framedWidgetHeight + (framePaddingHeight * 2) + (itemSpacing.y * 2) ) ), ImGuiChildFlags_Borders, ImGuiWindowFlags_NoScrollbar);
 
-	FetchCSV::renderSpreadSheet(activeDataFrame, pageStartIndex, pageEndIndex, 200.0f);
+		FetchCSV::renderSpreadSheet(activeDataFrame, 0, numColumns, cellWidth);
+
+		ImGui::EndChild();
+	}
+	
+	// Main spreadsheet rendering section
+	ImGui::BeginChild("SpreadsheetMainPanel", ImVec2( (viewport->Size.x - scrollBarSize - framePaddingWidth), viewport->Size.y - spreadsheetPanelStartPos - (framePaddingHeight * 3) ), ImGuiChildFlags_Borders, ImGuiWindowFlags_HorizontalScrollbar);
+
+	FetchCSV::renderSpreadSheet(activeDataFrame, pageStartIndex, pageEndIndex, cellWidth);
 	
 	ImGui::EndChild();
 
