@@ -425,7 +425,7 @@ const std::string save_file(GLFWwindow* window, int mods = 0)
 }
 
 // FetchCSV-specific functions ###
-static void showMainMenuBar(FetchCSV::DataFrame& activeDf, GLFWwindow* window)
+static void showMainMenuBar(FetchCSV::DataFrame& activeDf, GLFWwindow* window, bool& shouldRenderHeaders)
 {
 
 	if (ImGui::BeginMenu("File"))
@@ -494,6 +494,22 @@ static void showMainMenuBar(FetchCSV::DataFrame& activeDf, GLFWwindow* window)
 			{
 				std::cerr << "Not implemented!" << '\n';
 			}
+
+			static std::string showHideHeadersMenuText { "Hide Headers" };
+			if (shouldRenderHeaders)
+			{
+				showHideHeadersMenuText = "Hide Headers";
+			}
+			else
+			{
+				showHideHeadersMenuText = "Show Headers";
+			}
+
+			if (ImGui::MenuItem(showHideHeadersMenuText.c_str()))
+			{
+				shouldRenderHeaders = !shouldRenderHeaders;
+			}
+			
 			
 			ImGui::EndMenu();
 		}
@@ -679,11 +695,11 @@ int main(int argc, char* argv[])
 	
 	// Render headers by default (TODO: Maybe make this a config setting .ini)
 	static bool shouldRenderHeaders { true };	
-	
+
 	// Menu bar
 	if (ImGui::BeginMenuBar())
 	{
-		showMainMenuBar(activeDataFrame, window);
+		showMainMenuBar(activeDataFrame, window, shouldRenderHeaders);
 	}
 
 	ImGui::EndMenuBar();
