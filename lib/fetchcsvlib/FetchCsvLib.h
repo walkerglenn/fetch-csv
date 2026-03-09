@@ -7,6 +7,7 @@
 #include <vector>
 #include <fstream>
 #include <iostream>
+#include <optional>
 
 namespace FetchCSV
 {
@@ -34,8 +35,11 @@ public:
 	size_t getNumCells() const;
 	
 	const std::string& getFilePath() const;
+
+	std::optional< size_t> getIndexOfValue(std::string_view searchValue);
+
 };
 
-void renderSpreadSheet(DataFrame& dataFrame, size_t currentStartIndex, size_t currentEndIndex, float cellWidth);
+void renderSpreadSheet(DataFrame& dataFrame, size_t currentStartIndex, size_t currentEndIndex, float cellWidth, std::pair<bool, size_t>& searchState);
 
 }

@@ -26,6 +26,8 @@
 #include <stdio.h>          // printf, fprintf
 #include <stdlib.h>         // abort
 #include <string>
+#include <optional>
+#include <utility>
 
 // Volk headers
 #ifdef IMGUI_IMPL_VULKAN_USE_VOLK
@@ -425,7 +427,7 @@ const std::string save_file(GLFWwindow* window, int mods = 0)
 }
 
 // FetchCSV-specific functions ###
-static void showMainMenuBar(FetchCSV::DataFrame& activeDf, GLFWwindow* window, bool& shouldRenderHeaders)
+static void showMainMenuBar(FetchCSV::DataFrame& activeDf, GLFWwindow* window, bool& shouldRenderHeaders, std::pair<bool, size_t>& searchState, bool& showValueSearchWindow)
 {
 
 	if (ImGui::BeginMenu("File"))
@@ -521,7 +523,7 @@ static void showMainMenuBar(FetchCSV::DataFrame& activeDf, GLFWwindow* window, b
 	{
 		if (ImGui::MenuItem("Search for Value"))
 		{
-			std::cerr << "Not implemented!" << '\n';
+			showValueSearchWindow = true;
 		}
 
 		if (ImGui::MenuItem("Jump to Row"))
@@ -685,6 +687,9 @@ int main(int argc, char* argv[])
 	// Initialize the active dataframe
 	static FetchCSV::DataFrame activeDataFrame;
 
+	// Initialize the search state, this tells our spreadsheet rendering system if we need to focus on a particular cell that has a searched value in it
+	static std::pair<bool, size_t> searchState;
+
 	// If we have command-line arguments, try to load the dataframe from that path
 	static bool shouldLoadCsv { true };
 	if ( (shouldLoadCsv) && (argc > 1) )
@@ -696,14 +701,39 @@ int main(int argc, char* argv[])
 	// Render headers by default (TODO: Maybe make this a config setting .ini)
 	static bool shouldRenderHeaders { true };	
 
+	// Don't render search value window by default. TODO: refactor all of these state variables into a struct
+	static bool showValueSearchWindow { false };
+
 	// Menu bar
 	if (ImGui::BeginMenuBar())
 	{
-		showMainMenuBar(activeDataFrame, window, shouldRenderHeaders);
+		showMainMenuBar(activeDataFrame, window, shouldRenderHeaders, searchState, showValueSearchWindow);
 	}
 
 	ImGui::EndMenuBar();
 
+	if (showValueSearchWindow)
+	{
+	    ImGui::Begin("ValueSearchWindow", &showValueSearchWindow);   // Pass a pointer to our bool variable (the window will have a closing button that will clear the bool when clicked)
+	    static std::string searchValue {""};
+	    ImGui::InputText("##SearchInput", &searchValue);
+
+	    if (ImGui::Button("Search"))
+	    {
+		std::optional<size_t> searchResult { activeDataFrame.getIndexOfValue(searchValue) };
+		if (searchResult.has_value())
+		{
+			searchState.first = true ;
+			searchState.second = *searchResult;
+			showValueSearchWindow = false;
+		}
+		else
+		{
+			std::cout << "Value " << searchValue << " not found in spreadsheet.\n";	
+		}
+	    }
+	    ImGui::End();
+	}
 	// Pagination variables
 	size_t numColumns { activeDataFrame.getNumColumns() };
 	size_t numCells { activeDataFrame.getNumCells() };
@@ -773,7 +803,7 @@ int main(int argc, char* argv[])
 	{
 		ImGui::BeginChild("HeaderPanel", ImVec2( (viewport->Size.x - scrollBarSize - framePaddingWidth), (framedWidgetHeight + (framePaddingHeight * 2) + (itemSpacing.y * 2) ) ), ImGuiChildFlags_Borders, ImGuiWindowFlags_AlwaysVerticalScrollbar);
 
-		FetchCSV::renderSpreadSheet(activeDataFrame, 0, numColumns, cellWidth);
+		FetchCSV::renderSpreadSheet(activeDataFrame, 0, numColumns, cellWidth, searchState);
 
 		ImGui::SetScrollX(xScrollPos);
 
@@ -785,7 +815,7 @@ int main(int argc, char* argv[])
 
 	ImGui::BeginChild("SpreadsheetMainPanel", ImVec2( (viewport->Size.x - scrollBarSize - framePaddingWidth), viewport->Size.y - spreadsheetPanelStartPos - (framePaddingHeight * 3) ), ImGuiChildFlags_Borders, ImGuiWindowFlags_HorizontalScrollbar);
 
-	FetchCSV::renderSpreadSheet(activeDataFrame, pageStartIndex, pageEndIndex, cellWidth);
+	FetchCSV::renderSpreadSheet(activeDataFrame, pageStartIndex, pageEndIndex, cellWidth, searchState);
 	
 	xScrollPos = ImGui::GetScrollX();
 

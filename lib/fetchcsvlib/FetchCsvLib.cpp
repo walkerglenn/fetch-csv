@@ -4,6 +4,8 @@
 #include <vector>
 #include <fstream>
 #include <iostream>
+#include <optional>
+#include <utility>
 
 namespace FetchCSV
 {
@@ -123,7 +125,19 @@ bool DataFrame::saveData(const std::string& outputFilePath, const char delimiter
 	return true;
 }
 
-void renderSpreadSheet(DataFrame& dataFrame, size_t currentStartIndex, size_t currentEndIndex, float cellWidth)
+std::optional<size_t> DataFrame::getIndexOfValue(std::string_view searchValue)
+{
+	for (size_t i {0}; i < mFrameContents.size(); ++i)
+	{
+		if (mFrameContents[i] == searchValue)
+		{
+			return i;
+		}
+	}
+	return std::nullopt;
+}
+
+void renderSpreadSheet(DataFrame& dataFrame, size_t currentStartIndex, size_t currentEndIndex, float cellWidth, std::pair<bool, size_t>& searchState)
 {
 	const float maxLabelWidth {ImGui::CalcTextSize("0000000000").x}; //Support label widths up to a value of 10 billion - 1
 	const size_t numColumns { dataFrame.getNumColumns() };
@@ -150,6 +164,14 @@ void renderSpreadSheet(DataFrame& dataFrame, size_t currentStartIndex, size_t cu
 		//Cell
 		std::string cellLabel { "##Input" +  std::to_string(i) };
 		ImGui::PushItemWidth(cellWidth); //TODO: A more dynamic item width
+
+		// If we've searched for a value, put the keyboard focus here
+		if ( (searchState.first == true) && (i == searchState.second) )
+		{
+			ImGui::SetKeyboardFocusHere();			
+			searchState.first = false;
+		}
+
 		ImGui::InputText(cellLabel.c_str(), &dataFrame.getData()[i]);
 		ImGui::PopItemWidth();
 		if (isEndOfLine)
