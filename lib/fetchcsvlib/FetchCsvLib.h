@@ -12,6 +12,28 @@
 namespace FetchCSV
 {
 
+struct AppState
+{
+        // This tells our spreadsheet rendering system if we need to focus on a particular cell that has a searched value in it
+        std::pair<bool, size_t> searchState {false, 0};
+
+        // Pagination variables
+        size_t pageStartIndex {};
+        size_t pageEndIndex {};
+        size_t numRowsToDisplay { 1'000 };
+
+        // Cell
+        float cellWidth { 200.0f };
+
+        // Spreadsheet
+	bool shouldLoadCsv { true };
+
+        // Rendering bools
+        bool shouldRenderHeaders { true };
+        bool showValueSearchWindow { false };
+};
+
+
 class DataFrame
 {
 
@@ -40,6 +62,6 @@ public:
 
 };
 
-void renderSpreadSheet(DataFrame& dataFrame, size_t currentStartIndex, size_t currentEndIndex, float cellWidth, std::pair<bool, size_t>& searchState);
+void renderSpreadSheet(DataFrame& dataFrame, size_t currentStartIndex, size_t currentEndIndex,  AppState& appState);
 
 }

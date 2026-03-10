@@ -427,7 +427,7 @@ const std::string save_file(GLFWwindow* window, int mods = 0)
 }
 
 // FetchCSV-specific functions ###
-static void showMainMenuBar(FetchCSV::DataFrame& activeDf, GLFWwindow* window, bool& shouldRenderHeaders, std::pair<bool, size_t>& searchState, bool& showValueSearchWindow)
+static void showMainMenuBar(FetchCSV::DataFrame& activeDf, GLFWwindow* window, FetchCSV::AppState& appState)
 {
 
 	if (ImGui::BeginMenu("File"))
@@ -498,7 +498,7 @@ static void showMainMenuBar(FetchCSV::DataFrame& activeDf, GLFWwindow* window, b
 			}
 
 			static std::string showHideHeadersMenuText { "Hide Headers" };
-			if (shouldRenderHeaders)
+			if (appState.shouldRenderHeaders)
 			{
 				showHideHeadersMenuText = "Hide Headers";
 			}
@@ -509,7 +509,7 @@ static void showMainMenuBar(FetchCSV::DataFrame& activeDf, GLFWwindow* window, b
 
 			if (ImGui::MenuItem(showHideHeadersMenuText.c_str()))
 			{
-				shouldRenderHeaders = !shouldRenderHeaders;
+				appState.shouldRenderHeaders = !appState.shouldRenderHeaders;
 			}
 			
 			
@@ -523,7 +523,7 @@ static void showMainMenuBar(FetchCSV::DataFrame& activeDf, GLFWwindow* window, b
 	{
 		if (ImGui::MenuItem("Search for Value"))
 		{
-			showValueSearchWindow = true;
+			appState.showValueSearchWindow = true;
 		}
 
 		if (ImGui::MenuItem("Jump to Row"))
@@ -684,6 +684,9 @@ int main(int argc, char* argv[])
 	//static bool showDemo {false};
 	//ImGui::ShowDemoWindow(&showDemo);
 
+	// Instatiate our app state
+	static FetchCSV::AppState appState {};
+
 	// Initialize the active dataframe
 	static FetchCSV::DataFrame activeDataFrame;
 
@@ -691,30 +694,23 @@ int main(int argc, char* argv[])
 	static std::pair<bool, size_t> searchState;
 
 	// If we have command-line arguments, try to load the dataframe from that path
-	static bool shouldLoadCsv { true };
-	if ( (shouldLoadCsv) && (argc > 1) )
+	if ( (appState.shouldLoadCsv) && (argc > 1) )
 	{
 		activeDataFrame.loadData(argv[1]);
-		shouldLoadCsv = false;
+		appState.shouldLoadCsv = false;
 	}
 	
-	// Render headers by default (TODO: Maybe make this a config setting .ini)
-	static bool shouldRenderHeaders { true };	
-
-	// Don't render search value window by default. TODO: refactor all of these state variables into a struct
-	static bool showValueSearchWindow { false };
-
 	// Menu bar
 	if (ImGui::BeginMenuBar())
 	{
-		showMainMenuBar(activeDataFrame, window, shouldRenderHeaders, searchState, showValueSearchWindow);
+		showMainMenuBar(activeDataFrame, window, appState);
 	}
 
 	ImGui::EndMenuBar();
 
-	if (showValueSearchWindow)
+	if (appState.showValueSearchWindow)
 	{
-	    ImGui::Begin("ValueSearchWindow", &showValueSearchWindow);   // Pass a pointer to our bool variable (the window will have a closing button that will clear the bool when clicked)
+	    ImGui::Begin("ValueSearchWindow", &appState.showValueSearchWindow);   // Pass a pointer to our bool variable (the window will have a closing button that will clear the bool when clicked)
 	    static std::string searchValue {""};
 	    ImGui::InputText("##SearchInput", &searchValue);
 
@@ -723,9 +719,9 @@ int main(int argc, char* argv[])
 		std::optional<size_t> searchResult { activeDataFrame.getIndexOfValue(searchValue) };
 		if (searchResult.has_value())
 		{
-			searchState.first = true ;
-			searchState.second = *searchResult;
-			showValueSearchWindow = false;
+			appState.searchState.first = true ;
+			appState.searchState.second = *searchResult;
+			appState.showValueSearchWindow = false;
 		}
 		else
 		{
@@ -737,30 +733,26 @@ int main(int argc, char* argv[])
 	// Pagination variables
 	size_t numColumns { activeDataFrame.getNumColumns() };
 	size_t numCells { activeDataFrame.getNumCells() };
-	static size_t numRowsToDisplay { 1'000 };
 
-	size_t numCellsToRender { numRowsToDisplay * numColumns };	
+	size_t numCellsToRender { appState.numRowsToDisplay * numColumns };	
 	if (numCellsToRender > numCells)
 	{
 		numCellsToRender = numCells;
 	}
 
-	static size_t pageStartIndex { 0 };
-	static size_t pageEndIndex { 0 };
-
 	// Pagination controls
 	if (ImGui::Button("<<"))
 	{
-		pageStartIndex = 0;
+		appState.pageStartIndex = 0;
 	}
 
 	ImGui::SameLine();
 
 	if (ImGui::Button("<"))
 	{
-		if (!(pageStartIndex == 0))
+		if (!(appState.pageStartIndex == 0))
 		{
-			pageStartIndex -= numCellsToRender;
+			appState.pageStartIndex -= numCellsToRender;
 		}
 	}
 	
@@ -768,25 +760,25 @@ int main(int argc, char* argv[])
 
 	if (ImGui::Button(">"))
 	{
-		pageStartIndex += numCellsToRender;
+		appState.pageStartIndex += numCellsToRender;
 	}
 
 	ImGui::SameLine();
 
 	if (ImGui::Button(">>"))
 	{
-		pageStartIndex = numCells - numCellsToRender;
+		appState.pageStartIndex = numCells - numCellsToRender;
 	}
 
 	// Recalculate rendering indexes based on pagination changes
-	if (pageStartIndex + numCellsToRender > numCells)
+	if (appState.pageStartIndex + numCellsToRender > numCells)
 	{
-		pageEndIndex = numCells;
-		pageStartIndex = pageEndIndex - numCellsToRender;
+		appState.pageEndIndex = numCells;
+		appState.pageStartIndex = appState.pageEndIndex - numCellsToRender;
 	}
 	else
 	{
-		pageEndIndex = pageStartIndex + numCellsToRender;
+		appState.pageEndIndex = appState.pageStartIndex + numCellsToRender;
 	}
 
 	// Render the dataFrame (and headers) in a Child section
@@ -795,15 +787,14 @@ int main(int argc, char* argv[])
 	static const float framePaddingWidth { ImGui::GetStyle().FramePadding.x };
 	static const ImVec2 itemSpacing { ImGui::GetStyle().ItemSpacing };
 	static float framedWidgetHeight { ImGui::GetFrameHeightWithSpacing() };
-	static float cellWidth = 200.0f; // TODO: Figure out what a "happy" dynamic width is
 	static float xScrollPos { 0.0 };
 
 	// Render headers (if we're supposed to)
-	if (shouldRenderHeaders)	
+	if (appState.shouldRenderHeaders)	
 	{
 		ImGui::BeginChild("HeaderPanel", ImVec2( (viewport->Size.x - scrollBarSize - framePaddingWidth), (framedWidgetHeight + (framePaddingHeight * 2) + (itemSpacing.y * 2) ) ), ImGuiChildFlags_Borders, ImGuiWindowFlags_AlwaysVerticalScrollbar);
 
-		FetchCSV::renderSpreadSheet(activeDataFrame, 0, numColumns, cellWidth, searchState);
+		FetchCSV::renderSpreadSheet(activeDataFrame, 0, numColumns, appState);
 
 		ImGui::SetScrollX(xScrollPos);
 
@@ -815,7 +806,7 @@ int main(int argc, char* argv[])
 
 	ImGui::BeginChild("SpreadsheetMainPanel", ImVec2( (viewport->Size.x - scrollBarSize - framePaddingWidth), viewport->Size.y - spreadsheetPanelStartPos - (framePaddingHeight * 3) ), ImGuiChildFlags_Borders, ImGuiWindowFlags_HorizontalScrollbar);
 
-	FetchCSV::renderSpreadSheet(activeDataFrame, pageStartIndex, pageEndIndex, cellWidth, searchState);
+	FetchCSV::renderSpreadSheet(activeDataFrame, appState.pageStartIndex, appState.pageEndIndex, appState);
 	
 	xScrollPos = ImGui::GetScrollX();
 

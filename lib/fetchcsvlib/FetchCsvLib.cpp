@@ -137,7 +137,7 @@ std::optional<size_t> DataFrame::getIndexOfValue(std::string_view searchValue)
 	return std::nullopt;
 }
 
-void renderSpreadSheet(DataFrame& dataFrame, size_t currentStartIndex, size_t currentEndIndex, float cellWidth, std::pair<bool, size_t>& searchState)
+void renderSpreadSheet(DataFrame& dataFrame, size_t currentStartIndex, size_t currentEndIndex, AppState& appState)
 {
 	const float maxLabelWidth {ImGui::CalcTextSize("0000000000").x}; //Support label widths up to a value of 10 billion - 1
 	const size_t numColumns { dataFrame.getNumColumns() };
@@ -163,13 +163,13 @@ void renderSpreadSheet(DataFrame& dataFrame, size_t currentStartIndex, size_t cu
 
 		//Cell
 		std::string cellLabel { "##Input" +  std::to_string(i) };
-		ImGui::PushItemWidth(cellWidth); //TODO: A more dynamic item width
+		ImGui::PushItemWidth(appState.cellWidth); //TODO: A more dynamic item width
 
 		// If we've searched for a value, put the keyboard focus here
-		if ( (searchState.first == true) && (i == searchState.second) )
+		if ( (appState.searchState.first == true) && (i == appState.searchState.second) )
 		{
 			ImGui::SetKeyboardFocusHere();			
-			searchState.first = false;
+			appState.searchState.first = false;
 		}
 
 		ImGui::InputText(cellLabel.c_str(), &dataFrame.getData()[i]);
