@@ -427,6 +427,15 @@ const std::string save_file(GLFWwindow* window, int mods = 0)
 }
 
 // FetchCSV-specific functions ###
+
+static void paginateToIndex(const size_t targetIndex, const FetchCSV::DataFrame& activeDf, FetchCSV::AppState& appState)
+{
+	size_t numCols { activeDf.getNumColumns() };
+	size_t cellsPerPage { appState.numRowsToDisplay * numCols };
+	size_t targetPageFirstIndex { ( targetIndex / (cellsPerPage) * cellsPerPage) };
+	appState.pageStartIndex = targetPageFirstIndex;
+}
+
 static void showMainMenuBar(FetchCSV::DataFrame& activeDf, GLFWwindow* window, FetchCSV::AppState& appState)
 {
 
@@ -717,11 +726,12 @@ int main(int argc, char* argv[])
 	    if (ImGui::Button("Search"))
 	    {
 		std::optional<size_t> searchResult { activeDataFrame.getIndexOfValue(searchValue) };
-		if (searchResult.has_value())
+		if (searchResult)
 		{
 			appState.searchState.first = true ;
 			appState.searchState.second = *searchResult;
 			appState.showValueSearchWindow = false;
+			paginateToIndex(*searchResult, activeDataFrame, appState);
 		}
 		else
 		{
