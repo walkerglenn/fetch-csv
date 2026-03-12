@@ -27,6 +27,7 @@ struct AppState
 
         // Spreadsheet
 	bool shouldLoadCsv { true };
+	char delimiter { ',' };
 
         // Rendering bools
         bool shouldRenderHeaders { true };

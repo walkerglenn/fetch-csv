@@ -451,7 +451,7 @@ static void showMainMenuBar(FetchCSV::DataFrame& activeDf, GLFWwindow* window, F
 			std::string selectedPath {open_file(window)};
 			if (selectedPath != "")
 			{
-				activeDf.loadData(selectedPath);
+				activeDf.loadData(selectedPath, appState.delimiter);
 			}
 		}
 		
@@ -460,7 +460,7 @@ static void showMainMenuBar(FetchCSV::DataFrame& activeDf, GLFWwindow* window, F
 			std::string selectedPath {activeDf.getFilePath()};
 			if (selectedPath != "")
 			{
-				if (activeDf.saveData(selectedPath))
+				if (activeDf.saveData(selectedPath, appState.delimiter))
 				{
 					std::cout << "DF saved to: " << selectedPath << '\n';
 				}
@@ -472,7 +472,7 @@ static void showMainMenuBar(FetchCSV::DataFrame& activeDf, GLFWwindow* window, F
 			std::string selectedPath {save_file(window)};
 			if (selectedPath != "")
 			{
-				if (activeDf.saveData(selectedPath))
+				if (activeDf.saveData(selectedPath, appState.delimiter))
 				{
 					std::cout << "DF saved to: " << selectedPath << '\n';
 				}
@@ -543,6 +543,23 @@ static void showMainMenuBar(FetchCSV::DataFrame& activeDf, GLFWwindow* window, F
 		ImGui::EndMenu();
 	}
 }
+
+static void displayDelimiter(FetchCSV::AppState& appState)
+{
+	std::string delimLabelStr { appState.delimiter };
+
+	if (delimLabelStr[0] == '\t')
+	{
+		delimLabelStr = "<TAB>";
+	}
+	
+	delimLabelStr = "\tValue Delimiter: " + delimLabelStr;
+
+	const char* delimLabelText { delimLabelStr.c_str() };
+
+	ImGui::Text(delimLabelText);
+}
+
 // Main code
 int main(int argc, char* argv[])
 {
@@ -696,7 +713,7 @@ int main(int argc, char* argv[])
 	// Instatiate our app state
 	static FetchCSV::AppState appState {};
 
-	// Initialize the active dataframe
+	// Initialize the active dataframe TODO: Create a constructor for this object
 	static FetchCSV::DataFrame activeDataFrame;
 
 	// Initialize the search state, this tells our spreadsheet rendering system if we need to focus on a particular cell that has a searched value in it
@@ -790,6 +807,11 @@ int main(int argc, char* argv[])
 	{
 		appState.pageEndIndex = appState.pageStartIndex + numCellsToRender;
 	}
+
+	ImGui::SameLine();
+
+	// Show the current delimiter
+	displayDelimiter(appState);	
 
 	// Render the dataFrame (and headers) in a Child section
 	static const float scrollBarSize { ImGui::GetStyle().ScrollbarSize };
