@@ -525,6 +525,26 @@ static void showMainMenuBar(FetchCSV::DataFrame& activeDf, GLFWwindow* window, F
 			ImGui::EndMenu();
 		}
 
+		if (ImGui::BeginMenu("Set Delimiter"))
+		{
+			if (ImGui::MenuItem(","))
+			{
+				appState.delimiter = ',';
+			}
+
+			if (ImGui::MenuItem("<TAB>"))
+			{
+				appState.delimiter = '\t';
+			}
+
+			if (ImGui::MenuItem("Custom..."))
+			{
+				appState.showCustomDelimiterWindow = true;
+			}
+			
+			ImGui::EndMenu();
+		}
+
 		ImGui::EndMenu();
 	}
 
@@ -734,9 +754,10 @@ int main(int argc, char* argv[])
 
 	ImGui::EndMenuBar();
 
+	// Value search menu. TODO: Size this pitiful little window better...
 	if (appState.showValueSearchWindow)
 	{
-	    ImGui::Begin("ValueSearchWindow", &appState.showValueSearchWindow);   // Pass a pointer to our bool variable (the window will have a closing button that will clear the bool when clicked)
+	    ImGui::Begin("ValueSearchWindow", &appState.showValueSearchWindow, ImGuiWindowFlags_AlwaysAutoResize);
 	    static std::string searchValue {""};
 	    ImGui::InputText("##SearchInput", &searchValue);
 
@@ -755,8 +776,25 @@ int main(int argc, char* argv[])
 			std::cout << "Value " << searchValue << " not found in spreadsheet.\n";	
 		}
 	    }
+
 	    ImGui::End();
 	}
+
+	if (appState.showCustomDelimiterWindow)
+	{
+		ImGui::Begin("CustomDelimiterWindow", &appState.showCustomDelimiterWindow, ImGuiWindowFlags_AlwaysAutoResize);
+		static std::string customDelimiterInput { "" };
+		ImGui::InputText("##CustomDelimiterInput", &customDelimiterInput);
+		
+		if ( (ImGui::Button("Set")) && (customDelimiterInput.length() > 0) )
+		{
+			appState.delimiter = customDelimiterInput[0];
+			appState.showCustomDelimiterWindow = false;	
+		}
+
+		ImGui::End();
+	}
+
 	// Pagination variables
 	size_t numColumns { activeDataFrame.getNumColumns() };
 	size_t numCells { activeDataFrame.getNumCells() };

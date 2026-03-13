@@ -32,6 +32,7 @@ struct AppState
         // Rendering bools
         bool shouldRenderHeaders { true };
         bool showValueSearchWindow { false };
+	bool showCustomDelimiterWindow { false };
 };
 
 
