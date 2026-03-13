@@ -11,7 +11,7 @@ Like I was, you're probably frustrated by how much spreadsheet editors like Exce
 2. Install CMake (if you don't already have it)
 3. Install Vulkan SDK using your preferred package manager (apt-get, winget, etc.)
 4. Navigate to the main project directory
-5. ~cmake -B build~
-6. ~cmake --build build~
+5. `cmake -B build`
+6. `cmake --build build`
 7. The binary should be deposited into the *build* directory
 8. Have fun!
