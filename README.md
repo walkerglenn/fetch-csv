@@ -12,7 +12,7 @@ Like I was, you may be frustrated by how much spreadsheet editors like Excel and
 8. Have fun!
 
 # Libraries Used
-Endless thanks to the authors and maintiners of the following libraries/SDKs:
+Endless thanks to the authors and maintainers of the following libraries/SDKs:
 - Dear ImGui
 - Vulkan
 - GLFW
