@@ -479,9 +479,9 @@ static void showMainMenuBar(FetchCSV::DataFrame& activeDf, GLFWwindow* window, F
 			}
 		}
 
-		if (ImGui::MenuItem("Close"))
+		if (ImGui::MenuItem("Close")) //TODO: Ask the user if they really want to close
 		{
-			std::cerr << "Not implemented!" << '\n';
+			glfwSetWindowShouldClose(window, true);
 		}
 
 		ImGui::EndMenu();
