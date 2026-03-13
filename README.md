@@ -11,7 +11,9 @@ Like I was, you may be frustrated by how much spreadsheet editors like Excel and
 7. The binary should be deposited into the *build* directory
 8. Have fun!
 
-# Libraries Used (THANK YOU!)
+# Libraries Used
+Endless thanks to the authors and maintiners of the following repositories:
 - Dear ImGui
+- Vulkan
 - GLFW
 - Native File Dialog Extended
