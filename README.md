@@ -1,5 +1,5 @@
 # Why Use This?
-Like I was, you're probably frustrated by how much spreadsheet editors like Excel and LibreOffice Calc assume about values in CSV files, often converting them and losing specific formatting (e.g. dates and numbers left-padded with 0s). Preseving this data involves importing said file and converting all of its values to text, which can be a pain for making small changes to multiple files. This application is a quick and easy way to open, search, edit, and save CSV files while retaining all of their formatting at the single-character level.
+Like I was, you may be frustrated by how much spreadsheet editors like Excel and LibreOffice Calc assume about values in CSV files, often converting them and losing specific formatting (e.g. dates and numbers left-padded with 0s). Preseving this data involves importing said file and converting all of its values to text, which can be a pain for making small changes to multiple files. This application is a quick and easy way to open, search, edit, and save CSV files while retaining all of their formatting at the single-character level.
 
 # Libraries Used (THANK YOU!)
 - Dear ImGui
