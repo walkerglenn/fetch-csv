@@ -16,6 +16,8 @@ bool DataFrame::loadData(const std::string& inputFilePath, const char delimiter)
 	// Clear the frame contents (if any exist currently)
 	mFrameContents.clear();
 
+	// Pre-allocate a large amount of space TODO: possibly make this proportional to the size of the file being opened
+	mFrameContents.reserve(50'000'000);
 
 	// Load the input file
 	std::ifstream inputFile { inputFilePath };
@@ -71,12 +73,12 @@ void DataFrame::parseLine(std::string_view inputLine, const char delimiter)
 			// Remove the comma from the end of the value
 			valueBuff.pop_back();
 
-			mFrameContents.push_back(valueBuff);
+			mFrameContents.push_back(std::move(valueBuff));
 			valueBuff.clear();
 		}	
 	}
 	
-	mFrameContents.push_back(valueBuff);
+	mFrameContents.push_back(std::move(valueBuff));
 }
 
 std::vector<std::string>& DataFrame::getData() { return mFrameContents; }
