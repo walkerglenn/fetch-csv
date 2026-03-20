@@ -733,8 +733,8 @@ int main(int argc, char* argv[])
 	// Instatiate our app state
 	static FetchCSV::AppState appState {};
 
-	// Initialize the active dataframe TODO: Create a constructor for this object
-	static FetchCSV::DataFrame activeDataFrame;
+	// Initialize the active dataframe
+	static FetchCSV::DataFrame activeDataFrame {};
 
 	// Initialize the search state, this tells our spreadsheet rendering system if we need to focus on a particular cell that has a searched value in it
 	static std::pair<bool, size_t> searchState;

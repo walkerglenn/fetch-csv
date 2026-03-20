@@ -40,9 +40,9 @@ class DataFrame
 {
 
 private:
-	std::vector<std::string> mFrameContents;
-	size_t  mNumColumns;
-	std::string  mFilePath;
+	std::vector<std::string> mFrameContents {};
+	size_t  mNumColumns {};
+	std::string  mFilePath {};
 
 	// Scan through a single line and add values to the contents vector
 	void parseLine(std::string_view inputLine, const char delimiter);
