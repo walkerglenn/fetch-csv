@@ -757,6 +757,7 @@ int main(int argc, char* argv[])
 	// Value search menu. TODO: Size this pitiful little window better...
 	if (appState.showValueSearchWindow)
 	{
+	    ImGui::SetNextWindowFocus(); // Always focus on this window when it's open
 	    ImGui::Begin("ValueSearchWindow", &appState.showValueSearchWindow, ImGuiWindowFlags_AlwaysAutoResize);
 	    static std::string searchValue {""};
 	    ImGui::InputText("##SearchInput", &searchValue);
