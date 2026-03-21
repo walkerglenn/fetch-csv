@@ -754,7 +754,7 @@ int main(int argc, char* argv[])
 
 	ImGui::EndMenuBar();
 
-	// Value search menu. TODO: Size this pitiful little window better...
+	// Value search menu 
 	if (appState.showValueSearchWindow)
 	{
 	    ImGui::SetNextWindowFocus(); // Always focus on this window when it's open
@@ -765,6 +765,24 @@ int main(int argc, char* argv[])
 	    if (ImGui::Button("Search"))
 	    {
 		std::optional<size_t> searchResult { activeDataFrame.getIndexOfValue(searchValue) };
+		if (searchResult)
+		{
+			appState.searchState.first = true ;
+			appState.searchState.second = *searchResult;
+			appState.showValueSearchWindow = false;
+			paginateToIndex(*searchResult, activeDataFrame, appState);
+		}
+		else
+		{
+			std::cout << "Value " << searchValue << " not found in spreadsheet.\n";	
+		}
+	    }
+
+	    ImGui::SameLine();
+
+	    if (ImGui::Button("Find Next"))
+	    {
+		std::optional<size_t> searchResult { activeDataFrame.getIndexOfValue(searchValue, appState.searchState.second + 1) };
 		if (searchResult)
 		{
 			appState.searchState.first = true ;

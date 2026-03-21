@@ -60,7 +60,7 @@ public:
 	
 	const std::string& getFilePath() const;
 
-	std::optional< size_t> getIndexOfValue(std::string_view searchValue);
+	std::optional< size_t> getIndexOfValue(std::string_view searchValue, size_t startingIndex = 0);
 
 };
 
