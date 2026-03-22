@@ -17,6 +17,9 @@ struct AppState
         // This tells our spreadsheet rendering system if we need to focus on a particular cell that has a searched value in it
         std::pair<bool, size_t> searchState {false, 0};
 
+	// Bool value that controls whether or not to search for query as full cell value, or merely a substring of the cell value
+	bool isExactChecked { true };
+
         // Pagination variables
         size_t pageStartIndex {};
         size_t pageEndIndex {};
@@ -60,7 +63,7 @@ public:
 	
 	const std::string& getFilePath() const;
 
-	std::optional< size_t> getIndexOfValue(std::string_view searchValue, size_t startingIndex = 0);
+	std::optional< size_t> getIndexOfValue(std::string_view searchValue, bool isExact, size_t startingIndex = 0);
 
 };
 

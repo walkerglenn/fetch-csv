@@ -127,11 +127,15 @@ bool DataFrame::saveData(const std::string& outputFilePath, const char delimiter
 	return true;
 }
 
-std::optional<size_t> DataFrame::getIndexOfValue(std::string_view searchValue, size_t startingIndex)
+std::optional<size_t> DataFrame::getIndexOfValue(std::string_view searchValue, bool isExact, size_t startingIndex)
 {
 	for (size_t i {startingIndex}; i < mFrameContents.size(); ++i)
 	{
 		if (mFrameContents[i] == searchValue)
+		{
+			return i;
+		}
+		if ( (!isExact) && (mFrameContents[i].find(searchValue) != std::string::npos) )
 		{
 			return i;
 		}

@@ -762,9 +762,12 @@ int main(int argc, char* argv[])
 	    static std::string searchValue {""};
 	    ImGui::InputText("##SearchInput", &searchValue);
 
+	    ImGui::Checkbox("Exact Match", &appState.isExactChecked);
+
 	    if (ImGui::Button("Search"))
 	    {
-		std::optional<size_t> searchResult { activeDataFrame.getIndexOfValue(searchValue) };
+		std::optional<size_t> searchResult { activeDataFrame.getIndexOfValue(searchValue, appState.isExactChecked) };
+
 		if (searchResult)
 		{
 			appState.searchState.first = true ;
@@ -782,7 +785,7 @@ int main(int argc, char* argv[])
 
 	    if (ImGui::Button("Find Next"))
 	    {
-		std::optional<size_t> searchResult { activeDataFrame.getIndexOfValue(searchValue, appState.searchState.second + 1) };
+		std::optional<size_t> searchResult { activeDataFrame.getIndexOfValue(searchValue, appState.isExactChecked, appState.searchState.second + 1) };
 		if (searchResult)
 		{
 			appState.searchState.first = true ;
