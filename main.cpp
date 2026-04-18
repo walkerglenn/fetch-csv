@@ -501,6 +501,11 @@ static void showMainMenuBar(FetchCSV::DataFrame& activeDf, GLFWwindow* window, F
 
 		if (ImGui::BeginMenu("Display"))
 		{
+			if (ImGui::MenuItem("Set # of Rows to Display"))
+			{
+				appState.showSetNumRowsWindow = true;
+			}
+
 			if (ImGui::MenuItem("Column Width"))
 			{
 				std::cerr << "Not implemented!" << '\n';
@@ -544,7 +549,7 @@ static void showMainMenuBar(FetchCSV::DataFrame& activeDf, GLFWwindow* window, F
 			
 			ImGui::EndMenu();
 		}
-
+		
 		ImGui::EndMenu();
 	}
 
@@ -804,6 +809,7 @@ int main(int argc, char* argv[])
 
 	if (appState.showCustomDelimiterWindow)
 	{
+	  	ImGui::SetNextWindowFocus(); // Always focus on this window when it's open
 		ImGui::Begin("CustomDelimiterWindow", &appState.showCustomDelimiterWindow, ImGuiWindowFlags_AlwaysAutoResize);
 		static std::string customDelimiterInput { "" };
 		ImGui::InputText("##CustomDelimiterInput", &customDelimiterInput);
@@ -812,6 +818,22 @@ int main(int argc, char* argv[])
 		{
 			appState.delimiter = customDelimiterInput[0];
 			appState.showCustomDelimiterWindow = false;	
+		}
+
+		ImGui::End();
+	}
+	
+	if (appState.showSetNumRowsWindow)
+	{
+	    	ImGui::SetNextWindowFocus(); // Always focus on this window when it's open
+		ImGui::Begin("SetNumRowsToDisplayWindow", &appState.showSetNumRowsWindow, ImGuiWindowFlags_AlwaysAutoResize);
+		static int numRowsToDisplayInput { 1'000 };
+		ImGui::InputInt("##NumRowsToDisplayInput", &numRowsToDisplayInput);
+		
+		if ( (ImGui::Button("Set")) && (numRowsToDisplayInput > 0) )
+		{
+			appState.numRowsToDisplay = static_cast<size_t>(numRowsToDisplayInput);
+			appState.showSetNumRowsWindow = false;	
 		}
 
 		ImGui::End();

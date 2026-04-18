@@ -36,6 +36,7 @@ struct AppState
         bool shouldRenderHeaders { true };
         bool showValueSearchWindow { false };
 	bool showCustomDelimiterWindow { false };
+	bool showSetNumRowsWindow { false };
 };
 
 
